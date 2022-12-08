@@ -33,7 +33,7 @@ class Input
   def valid_move?(input)
     start_coord = [input[0], input[1].to_i]
     end_coord = [input[2], input[3].to_i]
-    piece = @game.get_piece_at(start_coord)
+    piece = @game.pieces.get_piece_at(start_coord)
     unless piece
       puts "No piece at #{start_coord.join("")}"
       return false

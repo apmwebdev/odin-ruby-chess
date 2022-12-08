@@ -28,7 +28,7 @@ class Game
         show_turn_instructions(@black_player)
         take_turn(@black_player)
       end
-      check_for_win
+      check_game_status
     end
   end
 
@@ -45,6 +45,6 @@ class Game
     player.turns_taken += 1
   end
 
-  def check_for_win
+  def check_game_status
   end
 end

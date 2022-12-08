@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
 class Bishop < Piece
-  # stuff
+  def initialize(*args)
+    super
+    @moves_diagonally = true
+    @is_rider = true
+  end
 end

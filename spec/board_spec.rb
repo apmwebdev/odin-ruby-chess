@@ -11,8 +11,8 @@ describe Board do
       expect(board.squares[0].id).to eq(["a", 1])
     end
 
-    it "gives coordinates a2 to the second square" do
-      expect(board.squares[1].id).to eq(["a", 2])
+    it "gives coordinates b1 to the second square" do
+      expect(board.squares[1].id).to eq(["b", 1])
     end
 
     it "creates 64 squares" do

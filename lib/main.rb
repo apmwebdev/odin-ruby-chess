@@ -11,3 +11,8 @@ require_relative "piece/rook"
 
 game = Game.new
 game.start_game
+game.board.squares.each do |square|
+  str = "#{square.id}: "
+  str += square.piece.name if square.piece
+  p str
+end

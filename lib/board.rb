@@ -34,7 +34,7 @@ class Board
   def set_square_color(square)
     square.color = if (BLACK_FIRST_FILES.include?(square.id[0]) &&
       square.id[1] % 2 == 1) ||
-        (WHITE_FIRST_FILES.include?(square.id[0]) && square.id[1] % 2 == 0) 
+        (WHITE_FIRST_FILES.include?(square.id[0]) && square.id[1] % 2 == 0)
       Game::BLACK
     else
       Game::WHITE
@@ -72,16 +72,6 @@ class Board
     determine_square_relationship(start_coord, end_coord)[:knight_can_move_to]
   end
 
-  def is_diagonally_adjacent_to?(start_coord, end_coord)
-    result = determine_square_relationship(start_coord, end_coord)
-    result[:is_adjacent_to] && result[:is_diagonal_to]
-  end
-
-  def is_orthogonally_adjacent_to?(start_coord, end_coord)
-    result = determine_square_relationship(start_coord, end_coord)
-    result[:is_adjacent_to] && result[:is_orthogonal_to]
-  end
-
   def route_is_open_to?(start_coord, end_coord)
     route_squares = get_squares_between(start_coord, end_coord)
     route_squares.each do |square|
@@ -106,7 +96,7 @@ class Board
     end
     return_arr
   end
-  
+
   def get_squares_along_orthog_path(start_coord, end_coord)
     file = start_coord[0]
     rank = start_coord[1]
@@ -143,6 +133,16 @@ class Board
     end
     coords
   end
+
+  # def is_diagonally_adjacent_to?(start_coord, end_coord)
+  #   result = determine_square_relationship(start_coord, end_coord)
+  #   result[:is_adjacent_to] && result[:is_diagonal_to]
+  # end
+  #
+  # def is_orthogonally_adjacent_to?(start_coord, end_coord)
+  #   result = determine_square_relationship(start_coord, end_coord)
+  #   result[:is_adjacent_to] && result[:is_orthogonal_to]
+  # end
 
   # def link_adjacent_squares
   #   @squares.each do |square|

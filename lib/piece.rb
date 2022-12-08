@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Piece
-  attr_accessor :has_moved, :position
+  attr_accessor :has_moved, :is_captured, :square
   attr_reader :moves_orthogonally, :moves_diagonally, :is_rider, :is_leaper,
     :name, :color
 
@@ -10,6 +10,7 @@ class Piece
     @color = color
     @board = board
     @square = square
+    @is_captured = false
   end
 
   def valid_move?(end_coord)
@@ -24,8 +25,12 @@ class Piece
   end
 
   def move_to(new_position)
+    new_square = @board.get_square(new_position)
+    captured_piece = new_square.piece
+    captured_piece.is_captured = true if captured_piece
+    captured_piece.square = nil
     @square.piece = nil
-    @square = @board.get_square(new_position)
+    @square = new_square
     @square.piece = self
     @has_moved = true
   end

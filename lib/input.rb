@@ -47,7 +47,7 @@ class Input
       return false
     end
     if would_be_in_check?(start_coord, end_coord)
-      puts "Your king is in check"
+      puts "You must defend your king"
       return false
     end
     [start_coord, end_coord]

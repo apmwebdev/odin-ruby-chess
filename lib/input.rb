@@ -56,12 +56,4 @@ class Input
   def would_be_in_check?(start_coord, end_coord)
 
   end
-
-  def files
-    Board::FILES
-  end
-
-  def ranks
-    Board::RANKS
-  end
 end

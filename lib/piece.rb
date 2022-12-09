@@ -15,17 +15,48 @@ class Piece
 
   def valid_move?(end_coord)
     end_square = @board.get_square(end_coord)
-    return false if @color == end_square.piece.color && @name != "King"
-    return false if !@is_leaper && !route_is_open_to?(end_coord)
-    if is_orthogonal_to?(end_coord)
-      @moves_orthogonally && (@is_rider || is_adjacent_to?(end_coord))
-    elsif is_diagonal_to?(end_coord)
-      @moves_diagonally && (@is_rider || is_adjacent_to?(end_coord))
-    end
+    get_all_possible_moves.include?(end_square)
+    # return false if @color == end_square.piece.color && @name != "King"
+    # return false if !@is_leaper && !route_is_open_to?(end_coord)
+    # if is_orthogonal_to?(end_coord)
+    #   @moves_orthogonally && (@is_rider || is_adjacent_to?(end_coord))
+    # elsif is_diagonal_to?(end_coord)
+    #   @moves_diagonally && (@is_rider || is_adjacent_to?(end_coord))
+    # end
   end
 
-  def get_all_valid_moves
+  def get_all_possible_moves
+    directions = []
+    directions.concat(%w[up down left right]) if @moves_orthogonally
+    diagonal_moves = %w[up_left up_right down_left down_right]
+    directions.concat(diagonal_moves) if @moves_diagonally
+    possible_moves = []
+    directions.each do |direction|
+      if @is_rider
+        results = get_moves_in_direction(direction, @square)
+        possible_moves.concat(results)
+      else
+        adj_square = @square.public_send(direction)
+        unless adj_square.nil? ||
+            (adj_square.piece && adj_square.piece.color == @color)
+          possible_moves.push(adj_square)
+        end
+      end
+    end
+    possible_moves
+  end
 
+  def get_moves_in_direction(direction, start_square, results = [])
+    new_square = start_square.public_send(direction)
+    return if new_square.nil?
+    return if new_square.piece && new_square.piece.color == @color
+    if new_square.piece && new_square.piece.color != @color
+      results.push(new_square)
+    elsif new_square.piece.nil?
+      results.push(new_square)
+      get_moves_in_direction(direction, new_square, results)
+    end
+    results
   end
 
   def move_to(new_position)

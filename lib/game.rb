@@ -16,7 +16,7 @@ class Game
 
   def start_game
     @pieces.register_pieces
-    play_game
+    # play_game
   end
 
   def play_game
@@ -41,7 +41,7 @@ class Game
 
   def take_turn(player)
     valid_move = player.get_move
-    get_piece_at(valid_move[0]).move_to(valid_move[1])
+    @pieces.get_piece_at(valid_move[0]).move_to(valid_move[1])
     player.turns_taken += 1
   end
 
@@ -57,7 +57,7 @@ class Game
     opponent = (player.color == WHITE) ? @black_player : @white_player
     king_square = player.king.square
     opponent.pieces.each do |piece|
-      can_check = piece.valid_move?(king_square.id)
+      can_check = piece.valid_move?(king_square.coord)
       return can_check if can_check
     end
     false

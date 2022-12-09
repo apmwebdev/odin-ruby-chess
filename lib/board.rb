@@ -14,15 +14,18 @@ class Board
   end
 
   def create_board
-    coords = RANKS.product(FILES)
-    coords.each do |coord|
-      @squares.push(Square.new(coord.reverse, self))
+    ids = RANKS.product(FILES)
+    ids.each do |id|
+      file_num = id[1].bytes[0] - 97
+      rank_num = id[0] - 1
+      coord = [file_num, rank_num]
+      @squares.push(Square.new(id.reverse.join(""), coord, self))
     end
     initialize_square_data
   end
 
   def get_square(coordinate)
-    @squares.find { |square| square.id == coordinate }
+    @squares.find { |square| square.coord == coordinate }
   end
 
   def initialize_square_data
@@ -33,8 +36,8 @@ class Board
 
   def set_square_color(square)
     square.color = if (BLACK_FIRST_FILES.include?(square.id[0]) &&
-      square.id[1] % 2 == 1) ||
-        (WHITE_FIRST_FILES.include?(square.id[0]) && square.id[1] % 2 == 0)
+      square.id[1].to_i % 2 == 1) ||
+        (WHITE_FIRST_FILES.include?(square.id[0]) && square.id[1].to_i % 2 == 0)
       Game::BLACK
     else
       Game::WHITE
@@ -46,7 +49,7 @@ class Board
     rank = start_coord[1]
     new_file = end_coord[0]
     new_rank = end_coord[1]
-    file_change = (FILES.find_index(file) - FILES.find_index(new_file)).abs
+    file_change = (file - new_file).abs
     rank_change = (rank - new_rank).abs
 
     is_adjacent_to = file_change <= 1 && rank_change <= 1
@@ -86,13 +89,13 @@ class Board
     rank = start_coord[1]
     new_file = end_coord[0]
     new_rank = end_coord[1]
-    coords = if file == new_file || rank == new_rank
+    coords = if rank == new_rank || file == new_file
       get_squares_along_orthog_path(start_coord, end_coord)
     else
       get_squares_along_diag_path(start_coord, end_coord)
     end
     coords.each do |path_coord|
-      return_arr.push(@squares.find { |square| square.id == path_coord })
+      return_arr.push(@squares.find { |square| square.coord == path_coord })
     end
     return_arr
   end
@@ -118,18 +121,14 @@ class Board
   def get_squares_along_diag_path(start_coord, end_coord)
     coords = []
     file = start_coord[0]
-    file_i = FILES.find_index(file)
     rank = start_coord[1]
     new_file = end_coord[0]
-    new_file_i = FILES.find_index(new_file)
     new_rank = end_coord[1]
-    if file_i > new_file_i && rank > new_rank
-      loop do
-        file_i = (file_i > new_file_i) ? file_i - 1 : file_i + 1
-        rank = (rank > new_rank) ? rank - 1 : rank + 1
-        break if rank == new_rank
-        coords.push([FILES[file_i], rank])
-      end
+    loop do
+      file = (file > new_file) ? file - 1 : file + 1
+      rank = (rank > new_rank) ? rank - 1 : rank + 1
+      break if rank == new_rank
+      coords.push([file, rank])
     end
     coords
   end
@@ -144,20 +143,11 @@ class Board
   #   result[:is_adjacent_to] && result[:is_orthogonal_to]
   # end
 
-  # def link_adjacent_squares
-  #   @squares.each do |square|
-  #     file = square.id[0]
-  #     file_i = FILES.find_index(file)
-  #     rank = square.id[1]
-  #     adj_files = []
-  #     adj_files.push(file)
-  #     adj_files.push(FILES[file_i - 1]) if file_i > 0
-  #     adj_files.push(FILES[file_i + 1]) if file_i < 7
-  #     adj_ranks = []
-  #     adj_ranks.push(rank)
-  #     adj_ranks.push(rank - 1) if rank > 0
-  #     adj_ranks.push(rank + 1) if rank < 7
-  #     adj_coords = adj_files.product(adj_ranks)
-  #   end
-  # end
+  def link_adjacent_squares
+    @squares.each do |square|
+      file = square.coord[0]
+      rank = square.coord[1]
+
+    end
+  end
 end

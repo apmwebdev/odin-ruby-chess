@@ -24,6 +24,10 @@ class Piece
     end
   end
 
+  def get_all_valid_moves
+
+  end
+
   def move_to(new_position)
     has_moved_prior = @has_moved
     start_square = @square
@@ -58,31 +62,23 @@ class Piece
   end
 
   def is_adjacent_to?(coord)
-    @board.is_adjacent_to?(@square.id, coord)
+    @board.is_adjacent_to?(@square.coord, coord)
   end
 
   def is_diagonal_to?(coord)
-    @board.is_diagonal_to?(@square.id, coord)
+    @board.is_diagonal_to?(@square.coord, coord)
   end
 
   def is_orthogonal_to?(coord)
-    @board.is_orthogonal_to?(@square.id, coord)
+    @board.is_orthogonal_to?(@square.coord, coord)
   end
 
   def knight_can_move_to?(coord)
-    @board.knight_can_move_to?(@square.id, coord)
+    @board.knight_can_move_to?(@square.coord, coord)
   end
 
-  # def is_diagonally_adjacent_to?(coord)
-  #   @board.is_diagonally_adjacent_to?(@square.id, coord)
-  # end
-  #
-  # def is_orthogonally_adjacent_to?(coord)
-  #   @board.is_orthogonally_adjacent_to?(@square.id, coord)
-  # end
-
   def route_is_open_to?(coord)
-    @board.route_is_open_to?(@square.id, coord)
+    @board.route_is_open_to?(@square.coord, coord)
   end
 
 end

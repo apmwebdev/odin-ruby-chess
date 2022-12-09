@@ -31,8 +31,8 @@ class Input
   end
 
   def valid_move?(input)
-    start_coord = [input[0], input[1].to_i]
-    end_coord = [input[2], input[3].to_i]
+    start_coord = Square.id_to_coord(input[0..1])
+    end_coord = Square.coord_to_id(input[2..3])
     piece = @game.pieces.get_piece_at(start_coord)
     unless piece
       puts "No piece at #{start_coord.join("")}"

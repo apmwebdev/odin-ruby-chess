@@ -45,7 +45,10 @@ class Game
     player.turns_taken += 1
   end
 
-  def check_game_status
+  def check_game_status(current_player)
+    opponent = (player.color == WHITE) ? @black_player : @white_player
+    return declare_winner(current_player) if player_is_checkmated?(opponent)
+    declare_check(opponent) if player_is_in_check?(opponent)
   end
 
   def player_is_in_check?(player)
@@ -56,5 +59,14 @@ class Game
       return can_check if can_check
     end
     false
+  end
+
+  def player_is_checkmated?(player)
+  end
+
+  def declare_winner(player)
+  end
+
+  def declare_check(player)
   end
 end

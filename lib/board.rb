@@ -143,11 +143,16 @@ class Board
   #   result[:is_adjacent_to] && result[:is_orthogonal_to]
   # end
 
-  def link_adjacent_squares
-    @squares.each do |square|
-      file = square.coord[0]
-      rank = square.coord[1]
-
-    end
+  def link_adjacent_squares(square)
+    file = square.coord[0]
+    rank = square.coord[1]
+    square.up = get_square([file, rank + 1])
+    square.down = get_square([file, rank - 1])
+    square.left = get_square([file - 1, rank])
+    square.right = get_square([file + 1, rank])
+    square.up_left = get_square([file - 1, rank + 1])
+    square.up_right = get_square([file + 1, rank + 1])
+    square.down_left = get_square([file - 1, rank - 1])
+    square.down_right = get_square([file + 1, rank - 1])
   end
 end

@@ -21,14 +21,14 @@ class Game
 
   def play_game
     until @winner
-      if @white_player.turns_taken == @black_player.turns_taken
-        show_turn_instructions(@white_player)
-        take_turn(@white_player)
+      current_player = if @white_player.turns_taken == @black_player.turns_taken
+        @white_player
       else
-        show_turn_instructions(@black_player)
-        take_turn(@black_player)
+        @black_player
       end
-      check_game_status
+      show_turn_instructions(current_player)
+      take_turn(current_player)
+      check_game_status(current_player)
     end
   end
 

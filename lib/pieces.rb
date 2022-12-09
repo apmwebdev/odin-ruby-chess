@@ -23,7 +23,7 @@ class Pieces
     @black_king = nil
   end
 
-  def place_initial_pieces
+  def register_pieces
     @board.squares.each do |square|
       case square.id
       in ["a", 1] | ["h", 1]
@@ -54,6 +54,10 @@ class Pieces
         # Intentionally empty. Present to prevent error
       end
     end
+    @game.white_player.pieces = @white_pieces
+    @game.white_player.king = @white_king
+    @game.black_player.pieces = @black_pieces
+    @game.black_player.king = @black_king
   end
 
   def register_piece(piece)

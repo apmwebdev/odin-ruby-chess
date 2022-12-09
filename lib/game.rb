@@ -15,7 +15,7 @@ class Game
   end
 
   def start_game
-    @pieces.place_initial_pieces
+    @pieces.register_pieces
     play_game
   end
 
@@ -46,5 +46,15 @@ class Game
   end
 
   def check_game_status
+  end
+
+  def player_is_in_check?(player)
+    opponent = (player.color == WHITE) ? @black_player : @white_player
+    king_square = player.king.square
+    opponent.pieces.each do |piece|
+      can_check = piece.valid_move?(king_square.id)
+      return can_check if can_check
+    end
+    false
   end
 end

@@ -46,14 +46,17 @@ class Input
       puts "This piece can't move there"
       return false
     end
-    if would_be_in_check?(start_coord, end_coord)
+    if would_be_in_check?(piece, end_coord)
       puts "You must defend your king"
       return false
     end
     [start_coord, end_coord]
   end
 
-  def would_be_in_check?(start_coord, end_coord)
-
+  def would_be_in_check?(piece, end_coord)
+    potential_move = piece.move_to(end_coord)
+    would_be_in_check = @game.player_is_in_check?(@player)
+    piece.undo_move(potential_move)
+    would_be_in_check
   end
 end

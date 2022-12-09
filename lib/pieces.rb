@@ -27,29 +27,29 @@ class Pieces
     @board.squares.each do |square|
       case square.id
       in "a1" | "h1"
-        register_piece(Rook.new(Game::WHITE, @board, square))
+        register_piece(Rook.new(Game::WHITE, square))
       in "b1" | "g1"
-        register_piece(Knight.new(Game::WHITE, @board, square))
+        register_piece(Knight.new(Game::WHITE, square))
       in "c1" | "f1"
-        register_piece(Bishop.new(Game::WHITE, @board, square))
+        register_piece(Bishop.new(Game::WHITE, square))
       in "d1"
-        register_piece(Queen.new(Game::WHITE, @board, square))
+        register_piece(Queen.new(Game::WHITE, square))
       in "e1"
-        register_piece(King.new(Game::WHITE, @board, square))
+        register_piece(King.new(Game::WHITE, square))
       in /\w2/
-        register_piece(Pawn.new(Game::WHITE, @board, square))
+        register_piece(Pawn.new(Game::WHITE, square))
       in "a8" | "h8"
-        register_piece(Rook.new(Game::BLACK, @board, square))
+        register_piece(Rook.new(Game::BLACK, square))
       in "b8" | "g8"
-        register_piece(Knight.new(Game::BLACK, @board, square))
+        register_piece(Knight.new(Game::BLACK, square))
       in "c8" | "f8"
-        register_piece(Bishop.new(Game::BLACK, @board, square))
+        register_piece(Bishop.new(Game::BLACK, square))
       in "d8"
-        register_piece(Queen.new(Game::BLACK, @board, square))
+        register_piece(Queen.new(Game::BLACK, square))
       in "e8"
-        register_piece(King.new(Game::BLACK, @board, square))
+        register_piece(King.new(Game::BLACK, square))
       in /\w7/
-        register_piece(Pawn.new(Game::BLACK, @board, square))
+        register_piece(Pawn.new(Game::BLACK, square))
       else
         # Intentionally empty. Present to prevent error
       end
@@ -62,12 +62,15 @@ class Pieces
 
   def register_piece(piece)
     piece.square.piece = piece
+    piece.game = @game
     if piece.color == Game::WHITE
       @white_pieces.push(piece)
       @white_king = piece if piece.name == "King"
+      piece.player = @game.white_player
     else
       @black_pieces.push(piece)
       @black_king = piece if piece.name == "King"
+      piece.player = @game.black_player
     end
   end
 

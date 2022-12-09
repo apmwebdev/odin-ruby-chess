@@ -66,18 +66,22 @@ def get_all_possible_moves_basic_test
     puts square.id
   end
   w_queen.move_to("d1")
+end
+
+def get_all_king_moves
+  game = Game.new
+  game.start_game
 
   puts "King:"
   w_king = game.pieces.get_piece_at("e1")
   w_king.move_to("e4")
-  w_king.get_all_possible_moves.each do |square|
-    puts square.id
-  end
-  puts w_king.valid_move?("d4")
-  puts w_king.valid_move?("a6")
+  show_all_moves(w_king)
+  puts "at e5:"
+  w_king.move_to("e5")
+  show_all_moves(w_king)
 end
 
-def get_all_possible_moves_knight_test
+def get_all_knight_moves
   game = Game.new
   game.start_game
 
@@ -106,4 +110,4 @@ def show_all_moves(piece)
   end
 end
 
-get_all_pawn_moves
+get_all_king_moves

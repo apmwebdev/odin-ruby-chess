@@ -20,7 +20,7 @@ class Pawn < Piece
     else
       @square.down_right
     end
-    if fwd_left_square.piece && fwd_left_square.piece.color != @color
+    if fwd_left_square&.piece && fwd_left_square.piece.color != @color
       possible_moves.push(fwd_left_square)
     end
     # Forward right capture
@@ -29,7 +29,7 @@ class Pawn < Piece
     else
       @square.down_left
     end
-    if fwd_right_square.piece && fwd_right_square.piece.color != @color
+    if fwd_right_square&.piece && fwd_right_square.piece.color != @color
       possible_moves.push(fwd_right_square)
     end
     possible_moves

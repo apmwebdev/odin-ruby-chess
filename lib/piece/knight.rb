@@ -9,7 +9,7 @@ class Knight < Piece
   def get_all_possible_moves
     file = @square.coord[0]
     rank = @square.coord[1]
-    @board.squares.filter do |new_square|
+    @game.board.squares.filter do |new_square|
       next if new_square == @square
       next if new_square.piece && new_square.piece.color == @color
       new_file = new_square.coord[0]

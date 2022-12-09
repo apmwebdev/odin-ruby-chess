@@ -8,9 +8,9 @@ class Game
 
   def initialize
     @board = Board.new
-    @pieces = Pieces.new(self)
     @white_player = Player.new(WHITE, self)
     @black_player = Player.new(BLACK, self)
+    @pieces = Pieces.new(self)
     @winner = nil
   end
 

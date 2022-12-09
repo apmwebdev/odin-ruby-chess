@@ -1,20 +1,19 @@
 # frozen_string_literal: true
 
 class Piece
-  attr_accessor :has_moved, :is_captured, :square
+  attr_accessor :has_moved, :is_captured, :square, :game, :player
   attr_reader :moves_orthogonally, :moves_diagonally, :is_rider, :is_leaper,
     :name, :color
 
-  def initialize(color, board, square)
+  def initialize(color, square)
     @name = self.class.name.split("::").last
     @color = color
-    @board = board
     @square = square
     @is_captured = false
   end
 
   def valid_move?(end_coord)
-    end_square = @board.get_square(end_coord)
+    end_square = @game.board.get_square(end_coord)
     get_all_possible_moves.include?(end_square)
     # return false if @color == end_square.piece.color && @name != "King"
     # return false if !@is_leaper && !route_is_open_to?(end_coord)
@@ -62,7 +61,7 @@ class Piece
   def move_to(new_position)
     has_moved_prior = @has_moved
     start_square = @square
-    end_square = @board.get_square(new_position)
+    end_square = @game.board.get_square(new_position)
     captured_piece = end_square.piece
 
     return_hash = {has_moved_prior:, start_square:, end_square:,
@@ -92,24 +91,24 @@ class Piece
     captured_piece.is_captured = false if captured_piece
   end
 
-  def is_adjacent_to?(coord)
-    @board.is_adjacent_to?(@square.coord, coord)
-  end
-
-  def is_diagonal_to?(coord)
-    @board.is_diagonal_to?(@square.coord, coord)
-  end
-
-  def is_orthogonal_to?(coord)
-    @board.is_orthogonal_to?(@square.coord, coord)
-  end
-
-  def knight_can_move_to?(coord)
-    @board.knight_can_move_to?(@square.coord, coord)
-  end
-
-  def route_is_open_to?(coord)
-    @board.route_is_open_to?(@square.coord, coord)
-  end
+  # def is_adjacent_to?(coord)
+  #   @board.is_adjacent_to?(@square.coord, coord)
+  # end
+  #
+  # def is_diagonal_to?(coord)
+  #   @board.is_diagonal_to?(@square.coord, coord)
+  # end
+  #
+  # def is_orthogonal_to?(coord)
+  #   @board.is_orthogonal_to?(@square.coord, coord)
+  # end
+  #
+  # def knight_can_move_to?(coord)
+  #   @board.knight_can_move_to?(@square.coord, coord)
+  # end
+  #
+  # def route_is_open_to?(coord)
+  #   @board.route_is_open_to?(@square.coord, coord)
+  # end
 
 end

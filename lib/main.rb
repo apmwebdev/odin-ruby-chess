@@ -17,8 +17,8 @@ game.start_game
 # Add castling
 # Add promotion
 # Add en passant
-# Tweak king move validation? May be unnecessary
 # Add threefold repetition draw rule
 # Add fifty-move draw rule
 # Add dead position draw rule?
+# Add visual output
 # Add save support

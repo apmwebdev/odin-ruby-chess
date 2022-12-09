@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require './lib/board'
-require './lib/square'
+require "./lib/board"
+require "./lib/square"
 
 describe Board do
   describe "#create_board" do

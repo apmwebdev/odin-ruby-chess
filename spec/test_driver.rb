@@ -88,10 +88,22 @@ def get_all_possible_moves_knight_test
   show_all_moves(b1_knight)
 end
 
+def get_all_pawn_moves
+  game = Game.new
+  game.start_game
+
+  e2_pawn = game.pieces.get_piece_at("e2")
+  d7 = game.pieces.get_piece_at("d7")
+  d7.move_to("f3")
+  show_all_moves(e2_pawn)
+  e2_pawn.move_to("e4")
+  show_all_moves(e2_pawn)
+end
+
 def show_all_moves(piece)
   piece.get_all_possible_moves.each do |square|
     puts square.id
   end
 end
 
-get_all_possible_moves_knight_test
+get_all_pawn_moves

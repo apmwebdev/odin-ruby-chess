@@ -48,8 +48,10 @@ class Game
   def check_game_status(current_player)
     opponent = (player.color == WHITE) ? @black_player : @white_player
     if player_is_in_check?(opponent)
-      return declare_winner(current_player) if player_is_checkmated?(opponent)
+      return declare_winner(current_player) unless player_can_move?(opponent)
       declare_check(opponent)
+    else
+      return declare_stalemate unless player_can_move?(opponent)
     end
   end
 
@@ -57,18 +59,31 @@ class Game
     opponent = (player.color == WHITE) ? @black_player : @white_player
     king_square = player.king.square
     opponent.pieces.each do |piece|
-      can_check = piece.valid_move?(king_square.coord)
-      return can_check if can_check
+      is_attacking_king = piece.valid_move?(king_square.coord)
+      return is_attacking_king if is_attacking_king
     end
     false
   end
 
-  def player_is_checkmated?(player)
+  def player_can_move?(player)
+    player_moves = player.get_all_possible_moves
+    can_move = false
+    player_moves.each do |piece_move|
+      piece_move => {piece:, move:}
+      potential_move = piece.move_to(move.coord)
+      can_move = !player_is_in_check?(player)
+      piece.undo_move(potential_move)
+      return can_move if can_move
+    end
+    can_move
   end
 
   def declare_winner(player)
   end
 
   def declare_check(player)
+  end
+
+  def declare_stalemate
   end
 end

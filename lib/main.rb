@@ -12,3 +12,13 @@ require_relative "piece/rook"
 
 game = Game.new
 game.start_game
+
+# TODO:
+# Add castling
+# Add promotion
+# Add en passant
+# Tweak king move validation? May be unnecessary
+# Add threefold repetition draw rule
+# Add fifty-move draw rule
+# Add dead position draw rule?
+# Add save support

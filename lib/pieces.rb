@@ -71,7 +71,7 @@ class Pieces
     end
   end
 
-  def get_piece_at(coord)
-    @board.get_square(coord).piece
+  def get_piece_at(coord_or_id)
+    @board.get_square(coord_or_id).piece
   end
 end

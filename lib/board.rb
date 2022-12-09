@@ -24,13 +24,18 @@ class Board
     initialize_square_data
   end
 
-  def get_square(coordinate)
-    @squares.find { |square| square.coord == coordinate }
+  def get_square(query)
+    if query.is_a?(Array)
+      @squares.find { |square| square.coord == query }
+    else
+      @squares.find { |square| square.id == query }
+    end
   end
 
   def initialize_square_data
     @squares.each do |square|
       set_square_color(square)
+      link_adjacent_squares(square)
     end
   end
 

@@ -34,7 +34,7 @@ class Piece
     directions.each do |direction|
       if @is_rider
         results = get_moves_in_direction(direction, @square)
-        possible_moves.concat(results)
+        possible_moves.concat(results) if results
       else
         adj_square = @square.public_send(direction)
         unless adj_square.nil? ||

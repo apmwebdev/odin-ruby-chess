@@ -15,7 +15,6 @@ game.start_game
 
 # TODO:
 # Add promotion
-# Add en passant
 # Add threefold repetition draw rule
 # Add fifty-move draw rule
 # Add dead position draw rule?

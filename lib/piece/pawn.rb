@@ -19,18 +19,20 @@ class Pawn < Piece
     # Capture, including en passant
     en_passant_rights = @game.get_en_passant_rights
     # Forward left capture or en passant
-    if en_passant_rights
-      fwd_left_ep = en_passant_rights[:ep_piece] == self &&
-        en_passant_rights[:ep_end_square] == fwd_left_square
+    unless en_passant_rights.empty?
+      fwd_left_ep = en_passant_rights.find do |ep|
+        ep[:ep_piece] == self && ep[:ep_end_square] == fwd_left_square
+      end
     end
     if (fwd_left_square&.piece && fwd_left_square.piece.color != @color) ||
         fwd_left_ep
       possible_moves.push(fwd_left_square)
     end
     # Forward right capture or en passant
-    if en_passant_rights
-      fwd_right_ep = en_passant_rights[:ep_piece] == self &&
-        en_passant_rights[:ep_end_square] == fwd_right_square
+    unless en_passant_rights.empty?
+      fwd_right_ep = en_passant_rights.find do |ep|
+        ep[:ep_piece] == self && ep[:ep_end_square] == fwd_right_square
+      end
     end
     if (fwd_right_square&.piece && fwd_right_square.piece.color != @color) ||
         fwd_right_ep

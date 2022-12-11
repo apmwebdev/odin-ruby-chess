@@ -3,7 +3,7 @@
 class Move
   attr_reader :piece, :start_square, :end_square, :type, :game
   attr_accessor :captured_piece, :has_moved_prior, :rook, :r_start_square,
-    :r_end_square, :captured_piece_square, :game_state
+    :r_end_square, :captured_piece_square, :game_state_after
 
   def initialize(piece, start_square, end_square, type, game)
     @piece = piece
@@ -11,7 +11,6 @@ class Move
     @end_square = end_square
     @type = type
     @game = game
-    save_game_state
   end
 
   def do
@@ -25,6 +24,7 @@ class Move
     when "promotion"
       do_promotion_move
     end
+    save_game_state
   end
 
   def undo
@@ -41,6 +41,37 @@ class Move
   end
 
   def save_game_state
+    state = "Squares and pieces:"
+    @game.board.squares.each do |square|
+      state += "#{square.id}: "
+      state += if square.piece
+        "#{square.piece.name} #{square.piece.color[0]} "
+      else
+        "- "
+      end
+    end
+    state = state.strip
+    state += ". Castling rights: "
+    c_rights = @game.get_castling_rights
+    state += "White can castle kingside: #{c_rights[:white_can_ks_castle]}. "
+    state += "White can castle queenside: #{c_rights[:white_can_qs_castle]}. "
+    state += "Black can castle kingside: #{c_rights[:black_can_ks_castle]}. "
+    state += "Black can castle queenside: #{c_rights[:black_can_qs_castle]}. "
+
+    state += "En passant rights: "
+    ep_rights = @game.get_en_passant_rights
+    if !ep_rights.empty?
+      ep_rights.each do |ep|
+        ep => {ep_piece:, victim:}
+        ep_start_sq = ep_piece.square.id
+        victim_sq = victim.square.id
+        state += "Pawn at #{ep_start_sq} can en passant capture #{victim_sq}. "
+      end
+    else
+      state += "-"
+    end
+    state = state.strip
+    @game_state_after = state
   end
 
   def do_normal_move

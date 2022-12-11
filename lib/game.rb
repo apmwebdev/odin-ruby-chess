@@ -151,9 +151,8 @@ class Game
   end
 
   def get_en_passant_rights
-    result_arr = []
+    result_array = []
     move = @move_log.last
-    return result_arr unless move
     if move && move.piece.name == "Pawn" && !move.has_moved_prior &&
         (move.end_square.coord[1] == 3 || move.end_square.coord[1] == 4)
       left_piece = move.end_square.left.piece
@@ -165,10 +164,11 @@ class Game
           ep_end_file = move.end_square.coord[0]
           ep_end_square = @board.get_square([ep_end_file, ep_end_rank])
           ep_data = {ep_piece:, ep_end_square:, victim: move.piece}
-          return ep_data
+          result_array.push(ep_data)
         end
       end
     end
+    result_array
     # puts "get_en_passant_rights, results:"
     # result_arr.each do |item|
     #   item => {ep_piece:, ep_end_square:, victim:}

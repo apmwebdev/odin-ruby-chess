@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "move"
+
 class Piece
   attr_accessor :has_moved, :is_captured, :square, :game, :player
   attr_reader :moves_orthogonally, :moves_diagonally, :is_rider, :is_leaper,
@@ -64,29 +66,29 @@ class Piece
     end_square = @game.board.get_square(new_position)
     captured_piece = end_square.piece
 
-    return_hash = {piece: self, has_moved_prior:, start_square:, end_square:,
-                   captured_piece:}
+    move = Move.new(self, start_square, end_square, "normal", @game)
+    move.has_moved_prior = has_moved_prior
+    move.captured_piece = captured_piece
+    move.do
 
-    captured_piece.is_captured = true if captured_piece
-    captured_piece.square = nil if captured_piece
-    start_square.piece = nil
-    end_square.piece = self
-    @square = end_square
-    @has_moved = true
+    # captured_piece.is_captured = true if captured_piece
+    # captured_piece.square = nil if captured_piece
+    # start_square.piece = nil
+    # end_square.piece = self
+    # @square = end_square
+    # @has_moved = true
 
-    return_hash
+    move
   end
 
-  def undo_move(move_hash)
-    move_hash => {piece:, has_moved_prior:, start_square:, end_square:,
-      captured_piece:}
-
-    @has_moved = has_moved_prior
-    @square = start_square
-    end_square.piece = captured_piece
-    start_square.piece = self
-    captured_piece.square = end_square if captured_piece
-    captured_piece.is_captured = false if captured_piece
+  def undo_move(move)
+    move.undo
+    # @has_moved = move.has_moved_prior
+    # @square = move.start_square
+    # move.end_square.piece = move.captured_piece
+    # move.start_square.piece = self
+    # move.captured_piece.square = move.end_square if move.captured_piece
+    # move.captured_piece.is_captured = false if move.captured_piece
   end
 
   # def is_adjacent_to?(coord)

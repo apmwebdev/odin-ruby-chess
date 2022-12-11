@@ -56,7 +56,7 @@ class Input
   def would_be_in_check?(piece, end_coord)
     potential_move = piece.move_to(end_coord)
     would_be_in_check = @game.player_is_in_check?(@player)
-    piece.undo_move(potential_move)
+    potential_move.undo
     would_be_in_check
   end
 end

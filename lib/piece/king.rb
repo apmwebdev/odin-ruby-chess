@@ -16,7 +16,7 @@ class King < Piece
       in_check
     end
 
-    castling_rights = @game.assess_castling_rights
+    castling_rights = @game.get_castling_rights
     if @color == Game::WHITE
       if castling_rights[:white_can_qs_castle]
         moves.push(get_square("c1"))
@@ -57,36 +57,37 @@ class King < Piece
   def castle(end_square, r_start_square, r_end_square)
     rook = r_start_square.piece
 
-    return_hash = {piece: self, start_square: @square, end_square:, rook:,
-                   r_start_square:, r_end_square:}
+    move = Move.new(self, @square, end_square, "castle", @game)
+    move.rook = rook
+    move.r_start_square, move.r_end_square = r_start_square, r_end_square
+    move.do
 
-    @square.piece = nil
-    end_square.piece = self
-    @square = end_square
-    @has_moved = true
-    r_start_square.piece = nil
-    r_end_square.piece = rook
-    rook.square = r_end_square
-    rook.has_moved = true
+    # @square.piece = nil
+    # end_square.piece = self
+    # @square = end_square
+    # @has_moved = true
+    # r_start_square.piece = nil
+    # r_end_square.piece = rook
+    # rook.square = r_end_square
+    # rook.has_moved = true
 
-    return_hash
+    move
   end
 
-  def undo_move(move_hash)
-    if move_hash[:rook]
-      move_hash => {piece:, start_square:, end_square:, rook:, r_start_square:,
-        r_end_square:}
-      rook.has_moved = false
-      rook.square = r_start_square
-      r_end_square.piece = nil
-      r_start_square.piece = rook
-      @has_moved = false
-      @square = start_square
-      end_square.piece = nil
-      @square.piece = self
-    else
-      super
-    end
+  def undo_move(move)
+    move.undo
+    # if move.type == "castle"
+    #   move.rook.has_moved = false
+    #   move.rook.square = move.r_start_square
+    #   move.r_end_square.piece = nil
+    #   move.r_start_square.piece = move.rook
+    #   @has_moved = false
+    #   @square = move.start_square
+    #   move.end_square.piece = nil
+    #   @square.piece = self
+    # else
+    #   super
+    # end
   end
 
   def get_square(coord_or_id)

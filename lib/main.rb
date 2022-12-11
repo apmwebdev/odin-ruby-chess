@@ -14,7 +14,6 @@ game = Game.new
 game.start_game
 
 # TODO:
-# Add castling
 # Add promotion
 # Add en passant
 # Add threefold repetition draw rule

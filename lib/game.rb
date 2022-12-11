@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Game
-  attr_reader :board, :pieces, :white_player, :black_player, :winner
+  attr_reader :board, :pieces, :white_player, :black_player, :winner, :move_log
 
   WHITE = "white"
   BLACK = "black"
@@ -13,6 +13,7 @@ class Game
     @white_player.opponent = @black_player
     @black_player.opponent = @white_player
     @pieces = Pieces.new(self)
+    @move_log = []
     @winner = nil
   end
 
@@ -43,7 +44,7 @@ class Game
 
   def take_turn(player)
     valid_move = player.get_move
-    @pieces.get_piece_at(valid_move[0]).move_to(valid_move[1])
+    @move_log.push(@pieces.get_piece_at(valid_move[0]).move_to(valid_move[1]))
     player.turns_taken += 1
   end
 
@@ -81,7 +82,7 @@ class Game
       piece_move => {piece:, move:}
       potential_move = piece.move_to(move.coord)
       can_move = !player_is_in_check?(player)
-      piece.undo_move(potential_move)
+      potential_move.undo
       return can_move if can_move
     end
     can_move
@@ -96,7 +97,7 @@ class Game
   def declare_stalemate
   end
 
-  def assess_castling_rights
+  def get_castling_rights
     white_can_ks_castle, white_can_qs_castle = false, false
     black_can_ks_castle, black_can_qs_castle = false, false
     unless @white_player.king.has_moved || player_is_in_check?(@white_player)
@@ -147,5 +148,31 @@ class Game
       return false if player_can_attack_square?(player.opponent, "g8")
       true
     end
+  end
+
+  def get_en_passant_rights
+    result_arr = []
+    move = @move_log.last
+    return result_arr unless move
+    if move && move.piece.name == "Pawn" && !move.has_moved_prior &&
+        (move.end_square.coord[1] == 3 || move.end_square.coord[1] == 4)
+      left_piece = move.end_square.left.piece
+      right_piece = move.end_square.right.piece
+      [left_piece, right_piece].each do |ep_piece|
+        if ep_piece && ep_piece.name == "Pawn" &&
+            ep_piece.color != move.piece.color
+          ep_end_rank = (move.start_square.coord[1] + move.end_square.coord[1]) / 2
+          ep_end_file = move.end_square.coord[0]
+          ep_end_square = @board.get_square([ep_end_file, ep_end_rank])
+          ep_data = {ep_piece:, ep_end_square:, victim: move.piece}
+          return ep_data
+        end
+      end
+    end
+    # puts "get_en_passant_rights, results:"
+    # result_arr.each do |item|
+    #   item => {ep_piece:, ep_end_square:, victim:}
+    #   puts "ep_piece: #{ep_piece.name}, ep_end_square: #{ep_end_square.id}, victim: #{victim.name}"
+    # end
   end
 end

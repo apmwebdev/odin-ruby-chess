@@ -104,10 +104,23 @@ def get_all_pawn_moves
   show_all_moves(e2_pawn)
 end
 
+def check_en_passant
+  game = Game.new
+  game.start_game
+  e2 = game.pieces.get_piece_at("e2")
+  d7 = game.pieces.get_piece_at("d7")
+  f7 = game.pieces.get_piece_at("f7")
+  e2.move_to("e5")
+  game.move_log.push(d7.move_to("d5"))
+  show_all_moves(e2)
+  game.move_log.push(f7.move_to("f5"))
+  show_all_moves(e2)
+end
+
 def show_all_moves(piece)
   piece.get_all_possible_moves.each do |square|
     puts square.id
   end
 end
 
-get_all_king_moves
+check_en_passant

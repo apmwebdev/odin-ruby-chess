@@ -64,7 +64,7 @@ class Piece
     end_square = @game.board.get_square(new_position)
     captured_piece = end_square.piece
 
-    return_hash = {has_moved_prior:, start_square:, end_square:,
+    return_hash = {piece: self, has_moved_prior:, start_square:, end_square:,
                    captured_piece:}
 
     captured_piece.is_captured = true if captured_piece
@@ -78,10 +78,8 @@ class Piece
   end
 
   def undo_move(move_hash)
-    has_moved_prior = move_hash[:has_moved_prior]
-    start_square = move_hash[:start_square]
-    end_square = move_hash[:end_square]
-    captured_piece = move_hash[:captured_piece]
+    move_hash => {piece:, has_moved_prior:, start_square:, end_square:,
+      captured_piece:}
 
     @has_moved = has_moved_prior
     @square = start_square

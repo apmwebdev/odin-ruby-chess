@@ -15,6 +15,83 @@ class King < Piece
       undo_move(potential_move)
       in_check
     end
+
+    castling_rights = @game.assess_castling_rights
+    if @color == Game::WHITE
+      if castling_rights[:white_can_qs_castle]
+        moves.push(get_square("c1"))
+      end
+      if castling_rights[:white_can_ks_castle]
+        moves.push(get_square("g1"))
+      end
+    else
+      if castling_rights[:black_can_qs_castle]
+        moves.push(get_square("c8"))
+      end
+      if castling_rights[:black_can_ks_castle]
+        moves.push(get_square("g8"))
+      end
+    end
+
     moves
   end
+
+  def move_to(new_position)
+    if !@has_moved && (new_position == "c1" || new_position == "g1" ||
+      new_position == "c8" || new_position == "g8")
+      case new_position
+      when "c1"
+        castle(get_square(new_position), get_square("a1"), get_square("d1"))
+      when "g1"
+        castle(get_square(new_position), get_square("h1"), get_square("f1"))
+      when "c8"
+        castle(get_square(new_position), get_square("a8"), get_square("d8"))
+      when "g8"
+        castle(get_square(new_position), get_square("h8"), get_square("f8"))
+      end
+    else
+      super
+    end
+  end
+
+  def castle(end_square, r_start_square, r_end_square)
+    rook = r_start_square.piece
+
+    return_hash = {piece: self, start_square: @square, end_square:, rook:,
+                   r_start_square:, r_end_square:}
+
+    @square.piece = nil
+    end_square.piece = self
+    @square = end_square
+    @has_moved = true
+    r_start_square.piece = nil
+    r_end_square.piece = rook
+    rook.square = r_end_square
+    rook.has_moved = true
+
+    return_hash
+  end
+
+  def undo_move(move_hash)
+    if move_hash[:rook]
+      move_hash => {piece:, start_square:, end_square:, rook:, r_start_square:,
+        r_end_square:}
+      rook.has_moved = false
+      rook.square = r_start_square
+      r_end_square.piece = nil
+      r_start_square.piece = rook
+      @has_moved = false
+      @square = start_square
+      end_square.piece = nil
+      @square.piece = self
+    else
+      super
+    end
+  end
+
+  def get_square(coord_or_id)
+    @game.board.get_square(coord_or_id)
+  end
 end
+
+

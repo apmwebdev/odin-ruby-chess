@@ -31,11 +31,11 @@ class Input
   end
 
   def valid_move?(input)
-    start_coord = Square.id_to_coord(input[0..1])
-    end_coord = Square.coord_to_id(input[2..3])
+    start_coord = input[0..1]
+    end_coord = input[2..3]
     piece = @game.pieces.get_piece_at(start_coord)
     unless piece
-      puts "No piece at #{start_coord.join("")}"
+      puts "No piece at #{start_coord}"
       return false
     end
     unless @player.color == piece.color

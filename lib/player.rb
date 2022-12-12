@@ -22,7 +22,7 @@ class Player
   def get_all_possible_moves
     possible_moves = []
     @pieces.each do |piece|
-      next if piece.is_captured
+      next if piece.is_captured || piece.promoted_to
       piece_moves = piece.get_all_possible_moves
       piece_moves.each do |move|
         possible_moves.push({piece:, move:})

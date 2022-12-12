@@ -8,7 +8,7 @@ class Pawn < Piece
   def get_all_possible_moves
     possible_moves = []
     # Normal movement
-    if fwd_square.piece.nil?
+    if fwd_square&.piece.nil?
       possible_moves.push(fwd_square)
     end
     # Move 2 for first move

@@ -140,4 +140,19 @@ def display_pieces
   puts game.output.block("yellow", game.output.b_king)
 end
 
-display_pieces
+def test_promotion
+  game = Game.new
+  game.pieces.register_pieces
+  a7 = game.board.get_square("a7")
+  a7p = a7.piece
+  a7p.is_captured = true
+  a7.piece = nil
+  a8 = game.board.get_square("a8")
+  a8p = a8.piece
+  a8p.is_captured = true
+  a8.piece = nil
+  game.pieces.get_piece_at("a2").move_to("a7")
+  game.play_game
+end
+
+test_promotion

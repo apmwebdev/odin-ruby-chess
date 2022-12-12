@@ -84,7 +84,7 @@ class Game
     coord_piece = @pieces.get_piece_at(coord)
     return false if coord_piece && coord_piece.color == player.color
     player.pieces.each do |piece|
-      next if piece == player.king || piece.is_captured
+      next if piece == player.king || piece.is_captured || piece.promoted_to
       can_attack = piece.valid_move?(coord)
       return can_attack if can_attack
     end
@@ -178,8 +178,8 @@ class Game
     move = @move_log.last
     if move && move.piece.name == "Pawn" && !move.has_moved_prior &&
         (move.end_square.coord[1] == 3 || move.end_square.coord[1] == 4)
-      left_piece = move.end_square.left.piece
-      right_piece = move.end_square.right.piece
+      left_piece = move.end_square.left&.piece
+      right_piece = move.end_square.right&.piece
       [left_piece, right_piece].each do |ep_piece|
         if ep_piece && ep_piece.name == "Pawn" &&
             ep_piece.color != move.piece.color

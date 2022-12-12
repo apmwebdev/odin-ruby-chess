@@ -5,8 +5,8 @@ class Board
 
   FILES = ("a".."h").to_a
   RANKS = (1..8).to_a
-  BLACK_FIRST_FILES = %w[a c e g]
-  WHITE_FIRST_FILES = %w[b d f h]
+  DARK_FIRST_FILES = %w[a c e g]
+  LIGHT_FIRST_FILES = %w[b d f h]
 
   def initialize
     @squares = []
@@ -40,12 +40,12 @@ class Board
   end
 
   def set_square_color(square)
-    square.color = if (BLACK_FIRST_FILES.include?(square.id[0]) &&
+    square.color = if (DARK_FIRST_FILES.include?(square.id[0]) &&
       square.id[1].to_i % 2 == 1) ||
-        (WHITE_FIRST_FILES.include?(square.id[0]) && square.id[1].to_i % 2 == 0)
-      Game::BLACK
+        (LIGHT_FIRST_FILES.include?(square.id[0]) && square.id[1].to_i % 2 == 0)
+      "dark"
     else
-      Game::WHITE
+      "light"
     end
   end
 

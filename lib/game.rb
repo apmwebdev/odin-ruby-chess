@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Game
-  attr_reader :board, :pieces, :white_player, :black_player, :winner, :move_log
+  attr_reader :board, :pieces, :white_player, :black_player, :winner, :move_log,
+    :output
 
   WHITE = "white"
   BLACK = "black"
@@ -13,17 +14,20 @@ class Game
     @white_player.opponent = @black_player
     @black_player.opponent = @white_player
     @pieces = Pieces.new(self)
+    @output = Output.new(self)
     @move_log = []
     @winner = nil
   end
 
   def start_game
     @pieces.register_pieces
-    # play_game
+    play_game
   end
 
   def play_game
     until @winner
+      @output.clear_screen
+      @output.render_board
       current_player = if @white_player.turns_taken == @black_player.turns_taken
         @white_player
       else
@@ -36,12 +40,13 @@ class Game
   end
 
   def show_turn_instructions(player)
-    return_str = "'s turn. Enter your move and hit Enter.\n"
-    return_str += "To enter a move, type the current position of the piece, "
-    return_str += " then the ending position, e.g. 'e2e4'.\n"
-    return_str += "For castling, enter the start and end square for the king, "
+    return_str = "'s turn. Enter your move and hit Enter.\n\n"
+    return_str += "- To enter a move, type the current position of the piece, "
+    return_str += "then the ending\nposition, e.g. 'e2e4'.\n"
+    return_str += "- For castling, enter the start and end square for the king, "
     return_str += "e.g. 'e1g1'."
-    "#{player.color.capitalize}#{return_str}"
+    return_str = "\n#{player.color.capitalize}#{return_str}"
+    puts return_str
   end
 
   def take_turn(player)
@@ -98,12 +103,18 @@ class Game
   end
 
   def declare_winner(player)
+    @output.clear_screen
+    @output.render_board
+    puts "#{player.color.capitalize} wins!"
+    @winner = player
   end
 
   def declare_check(player)
+    puts "#{player.color.capitalize}'s king is in check!"
   end
 
   def declare_stalemate
+    puts "The game is a draw"
   end
 
   def get_castling_rights

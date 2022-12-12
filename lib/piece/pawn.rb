@@ -89,6 +89,7 @@ class Pawn < Piece
   end
 
   def fwd_square
+    puts "fwd_square. is pawn captured? #{@is_captured}"
     (@color == WHITE) ? @square.up : @square.down
   end
 

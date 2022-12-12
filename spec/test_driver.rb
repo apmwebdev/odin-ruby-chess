@@ -7,6 +7,7 @@ require_relative "../lib/input"
 require_relative "../lib/piece"
 require_relative "../lib/pieces"
 require_relative "../lib/player"
+require_relative "../lib/output"
 require_relative "../lib/piece/bishop"
 require_relative "../lib/piece/king"
 require_relative "../lib/piece/knight"
@@ -123,4 +124,20 @@ def show_all_moves(piece)
   end
 end
 
-check_en_passant
+def display_pieces
+  game = Game.new
+  puts game.output.w_king
+  puts game.output.b_king
+  puts game.output.block("light_yellow", game.output.w_king)
+  puts game.output.block("light_yellow", game.output.b_king)
+  puts game.output.block("dark_gray", game.output.w_king)
+  puts game.output.block("dark_gray", game.output.b_king)
+  puts game.output.block("red", game.output.w_king)
+  puts game.output.block("red", game.output.b_king)
+  puts game.output.block("green", game.output.w_king)
+  puts game.output.block("green", game.output.b_king)
+  puts game.output.block("yellow", game.output.w_king)
+  puts game.output.block("yellow", game.output.b_king)
+end
+
+display_pieces

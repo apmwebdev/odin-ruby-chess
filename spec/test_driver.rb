@@ -140,7 +140,7 @@ def display_pieces
   puts game.output.block("yellow", game.output.b_king)
 end
 
-def test_promotion
+def promotion_test
   game = Game.new
   game.pieces.register_pieces
   a7 = game.board.get_square("a7")
@@ -155,4 +155,14 @@ def test_promotion
   game.play_game
 end
 
-test_promotion
+def castling_test
+  game = Game.new
+  game.pieces.register_pieces
+  f1 = game.board.get_square("f1")
+  g1 = game.board.get_square("g1")
+  f1.piece = nil
+  g1.piece = nil
+  game.play_game
+end
+
+castling_test

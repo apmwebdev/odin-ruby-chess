@@ -3,6 +3,7 @@
 class Game
   attr_reader :board, :pieces, :white_player, :black_player, :winner, :move_log,
     :output
+  attr_accessor :game_over
 
   WHITE = "white"
   BLACK = "black"
@@ -17,6 +18,7 @@ class Game
     @output = Output.new(self)
     @move_log = []
     @winner = nil
+    @game_over = false
   end
 
   def start_game
@@ -25,7 +27,7 @@ class Game
   end
 
   def play_game
-    until @winner
+    until @game_over
       @output.clear_screen
       @output.render_board
       current_player = if @white_player.turns_taken == @black_player.turns_taken
@@ -45,8 +47,9 @@ class Game
     return_str += "then the ending\nposition, e.g. 'e2e4'.\n"
     return_str += "- For castling, enter the start and end square for the king, "
     return_str += "e.g. 'e1g1'."
-    return_str = "\n#{player.color.capitalize}#{return_str}"
+    return_str = "\n#{player.color.capitalize}#{return_str}\n\n"
     puts return_str
+    declare_check(player) if player_is_in_check?(player)
   end
 
   def take_turn(player)
@@ -65,9 +68,8 @@ class Game
     end
     if player_is_in_check?(current_player.opponent)
       unless player_can_move?(current_player.opponent)
-        return declare_winner(current_player)
+        declare_winner(current_player)
       end
-      declare_check(current_player.opponent)
     else
       return declare_stalemate unless player_can_move?(current_player.opponent)
     end
@@ -82,7 +84,7 @@ class Game
     coord_piece = @pieces.get_piece_at(coord)
     return false if coord_piece && coord_piece.color == player.color
     player.pieces.each do |piece|
-      next if piece == player.king
+      next if piece == player.king || piece.is_captured
       can_attack = piece.valid_move?(coord)
       return can_attack if can_attack
     end
@@ -115,6 +117,7 @@ class Game
 
   def declare_stalemate
     puts "The game is a draw"
+    @game_over = true
   end
 
   def get_castling_rights

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Game
-  attr_reader :board, :pieces, :white_player, :black_player, :winner, :move_log,
+  attr_reader :board, :pieces, :white_player, :black_player, :move_log,
     :output
   attr_accessor :game_over
 
@@ -17,7 +17,6 @@ class Game
     @pieces = Pieces.new(self)
     @output = Output.new(self)
     @move_log = []
-    @winner = nil
     @game_over = false
   end
 
@@ -108,7 +107,7 @@ class Game
     @output.clear_screen
     @output.render_board
     puts "#{player.color.capitalize} wins!"
-    @winner = player
+    @game_over = true
   end
 
   def declare_check(player)

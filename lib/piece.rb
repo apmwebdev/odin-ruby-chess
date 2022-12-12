@@ -18,13 +18,6 @@ class Piece
   def valid_move?(end_coord)
     end_square = @game.board.get_square(end_coord)
     get_all_possible_moves.include?(end_square)
-    # return false if @color == end_square.piece.color && @name != "King"
-    # return false if !@is_leaper && !route_is_open_to?(end_coord)
-    # if is_orthogonal_to?(end_coord)
-    #   @moves_orthogonally && (@is_rider || is_adjacent_to?(end_coord))
-    # elsif is_diagonal_to?(end_coord)
-    #   @moves_diagonally && (@is_rider || is_adjacent_to?(end_coord))
-    # end
   end
 
   def get_all_possible_moves
@@ -72,44 +65,10 @@ class Piece
     move.captured_piece = captured_piece
     move.do
 
-    # captured_piece.is_captured = true if captured_piece
-    # captured_piece.square = nil if captured_piece
-    # start_square.piece = nil
-    # end_square.piece = self
-    # @square = end_square
-    # @has_moved = true
-
     move
   end
 
   def undo_move(move)
     move.undo
-    # @has_moved = move.has_moved_prior
-    # @square = move.start_square
-    # move.end_square.piece = move.captured_piece
-    # move.start_square.piece = self
-    # move.captured_piece.square = move.end_square if move.captured_piece
-    # move.captured_piece.is_captured = false if move.captured_piece
   end
-
-  # def is_adjacent_to?(coord)
-  #   @board.is_adjacent_to?(@square.coord, coord)
-  # end
-  #
-  # def is_diagonal_to?(coord)
-  #   @board.is_diagonal_to?(@square.coord, coord)
-  # end
-  #
-  # def is_orthogonal_to?(coord)
-  #   @board.is_orthogonal_to?(@square.coord, coord)
-  # end
-  #
-  # def knight_can_move_to?(coord)
-  #   @board.knight_can_move_to?(@square.coord, coord)
-  # end
-  #
-  # def route_is_open_to?(coord)
-  #   @board.route_is_open_to?(@square.coord, coord)
-  # end
-
 end

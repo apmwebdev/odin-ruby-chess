@@ -49,103 +49,93 @@ class Board
     end
   end
 
-  def determine_square_relationship(start_coord, end_coord)
-    file = start_coord[0]
-    rank = start_coord[1]
-    new_file = end_coord[0]
-    new_rank = end_coord[1]
-    file_change = (file - new_file).abs
-    rank_change = (rank - new_rank).abs
-
-    is_adjacent_to = file_change <= 1 && rank_change <= 1
-    is_diagonal_to = file_change == rank_change
-    is_orthogonal_to = file_change.zero? || rank_change.zero?
-    knight_can_move_to = [file_change, rank_change].sort == [1, 2]
-    {is_adjacent_to:, is_diagonal_to:, is_orthogonal_to:, knight_can_move_to:}
-  end
-
-  def is_adjacent_to?(start_coord, end_coord)
-    determine_square_relationship(start_coord, end_coord)[:is_adjacent_to]
-  end
-
-  def is_diagonal_to?(start_coord, end_coord)
-    determine_square_relationship(start_coord, end_coord)[:is_diagonal_to]
-  end
-
-  def is_orthogonal_to?(start_coord, end_coord)
-    determine_square_relationship(start_coord, end_coord)[:is_orthogonal_to]
-  end
-
-  def knight_can_move_to?(start_coord, end_coord)
-    determine_square_relationship(start_coord, end_coord)[:knight_can_move_to]
-  end
-
-  def route_is_open_to?(start_coord, end_coord)
-    route_squares = get_squares_between(start_coord, end_coord)
-    route_squares.each do |square|
-      return false unless square.piece.nil?
-    end
-    true
-  end
-
-  def get_squares_between(start_coord, end_coord)
-    return_arr = []
-    file = start_coord[0]
-    rank = start_coord[1]
-    new_file = end_coord[0]
-    new_rank = end_coord[1]
-    coords = if rank == new_rank || file == new_file
-      get_squares_along_orthog_path(start_coord, end_coord)
-    else
-      get_squares_along_diag_path(start_coord, end_coord)
-    end
-    coords.each do |path_coord|
-      return_arr.push(@squares.find { |square| square.coord == path_coord })
-    end
-    return_arr
-  end
-
-  def get_squares_along_orthog_path(start_coord, end_coord)
-    file = start_coord[0]
-    rank = start_coord[1]
-    new_file = end_coord[0]
-    new_rank = end_coord[1]
-    coords = []
-    if file == new_file
-      (rank...new_rank).each do |rank_in_between|
-        coords.push([file, rank_in_between])
-      end
-    else
-      (file...new_file).each do |file_in_between|
-        coords.push([file_in_between, rank])
-      end
-    end
-    coords
-  end
-
-  def get_squares_along_diag_path(start_coord, end_coord)
-    coords = []
-    file = start_coord[0]
-    rank = start_coord[1]
-    new_file = end_coord[0]
-    new_rank = end_coord[1]
-    loop do
-      file = (file > new_file) ? file - 1 : file + 1
-      rank = (rank > new_rank) ? rank - 1 : rank + 1
-      break if rank == new_rank
-      coords.push([file, rank])
-    end
-    coords
-  end
-
-  # def is_diagonally_adjacent_to?(start_coord, end_coord)
-  #   result = determine_square_relationship(start_coord, end_coord)
-  #   result[:is_adjacent_to] && result[:is_diagonal_to]
+  # def determine_square_relationship(start_coord, end_coord)
+  #   file = start_coord[0]
+  #   rank = start_coord[1]
+  #   new_file = end_coord[0]
+  #   new_rank = end_coord[1]
+  #   file_change = (file - new_file).abs
+  #   rank_change = (rank - new_rank).abs
+  #
+  #   is_adjacent_to = file_change <= 1 && rank_change <= 1
+  #   is_diagonal_to = file_change == rank_change
+  #   is_orthogonal_to = file_change.zero? || rank_change.zero?
+  #   knight_can_move_to = [file_change, rank_change].sort == [1, 2]
+  #   {is_adjacent_to:, is_diagonal_to:, is_orthogonal_to:, knight_can_move_to:}
   # end
   #
-  # def is_orthogonally_adjacent_to?(start_coord, end_coord)
-  #   result = determine_square_relationship(start_coord, end_coord)
-  #   result[:is_adjacent_to] && result[:is_orthogonal_to]
+  # def is_adjacent_to?(start_coord, end_coord)
+  #   determine_square_relationship(start_coord, end_coord)[:is_adjacent_to]
+  # end
+  #
+  # def is_diagonal_to?(start_coord, end_coord)
+  #   determine_square_relationship(start_coord, end_coord)[:is_diagonal_to]
+  # end
+  #
+  # def is_orthogonal_to?(start_coord, end_coord)
+  #   determine_square_relationship(start_coord, end_coord)[:is_orthogonal_to]
+  # end
+  #
+  # def knight_can_move_to?(start_coord, end_coord)
+  #   determine_square_relationship(start_coord, end_coord)[:knight_can_move_to]
+  # end
+  #
+  # def route_is_open_to?(start_coord, end_coord)
+  #   route_squares = get_squares_between(start_coord, end_coord)
+  #   route_squares.each do |square|
+  #     return false unless square.piece.nil?
+  #   end
+  #   true
+  # end
+  #
+  # def get_squares_between(start_coord, end_coord)
+  #   return_arr = []
+  #   file = start_coord[0]
+  #   rank = start_coord[1]
+  #   new_file = end_coord[0]
+  #   new_rank = end_coord[1]
+  #   coords = if rank == new_rank || file == new_file
+  #     get_squares_along_orthog_path(start_coord, end_coord)
+  #   else
+  #     get_squares_along_diag_path(start_coord, end_coord)
+  #   end
+  #   coords.each do |path_coord|
+  #     return_arr.push(@squares.find { |square| square.coord == path_coord })
+  #   end
+  #   return_arr
+  # end
+  #
+  # def get_squares_along_orthog_path(start_coord, end_coord)
+  #   file = start_coord[0]
+  #   rank = start_coord[1]
+  #   new_file = end_coord[0]
+  #   new_rank = end_coord[1]
+  #   coords = []
+  #   if file == new_file
+  #     (rank...new_rank).each do |rank_in_between|
+  #       coords.push([file, rank_in_between])
+  #     end
+  #   else
+  #     (file...new_file).each do |file_in_between|
+  #       coords.push([file_in_between, rank])
+  #     end
+  #   end
+  #   coords
+  # end
+  #
+  # def get_squares_along_diag_path(start_coord, end_coord)
+  #   coords = []
+  #   file = start_coord[0]
+  #   rank = start_coord[1]
+  #   new_file = end_coord[0]
+  #   new_rank = end_coord[1]
+  #   loop do
+  #     file = (file > new_file) ? file - 1 : file + 1
+  #     rank = (rank > new_rank) ? rank - 1 : rank + 1
+  #     break if rank == new_rank
+  #     coords.push([file, rank])
+  #   end
+  #   coords
   # end
 
   def link_adjacent_squares(square)

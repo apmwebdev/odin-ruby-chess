@@ -21,8 +21,6 @@ class Move
       do_castle_move
     when "ep"
       do_en_passant_move
-    when "promotion"
-      do_promotion_move
     end
     save_game_state
   end
@@ -35,8 +33,6 @@ class Move
       undo_castle_move
     when "ep"
       undo_en_passant_move
-    when "promotion"
-      undo_promotion_move
     end
   end
 
@@ -130,11 +126,5 @@ class Move
     @captured_piece_square.piece = @captured_piece
     @captured_piece.square = @captured_piece_square
     @captured_piece.is_captured = false
-  end
-
-  def do_promotion_move
-  end
-
-  def undo_promotion_move
   end
 end

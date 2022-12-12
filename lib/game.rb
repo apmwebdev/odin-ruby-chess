@@ -116,7 +116,9 @@ class Game
   end
 
   def declare_stalemate
-    puts "The game is a draw"
+    @output.clear_screen
+    @output.render_board
+    puts "Stalemate. The game is a draw"
     @game_over = true
   end
 
@@ -192,11 +194,6 @@ class Game
       end
     end
     result_array
-    # puts "get_en_passant_rights, results:"
-    # result_arr.each do |item|
-    #   item => {ep_piece:, ep_end_square:, victim:}
-    #   puts "ep_piece: #{ep_piece.name}, ep_end_square: #{ep_end_square.id}, victim: #{victim.name}"
-    # end
   end
 
   def can_promote_pawn?

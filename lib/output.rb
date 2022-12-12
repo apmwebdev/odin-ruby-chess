@@ -78,14 +78,8 @@ class Output
   end
 
   def block(color, char)
-    if color == "light_yellow"
-      "\e[103m  #{char}  \e[0m"
-    elsif color == "dark_gray"
-      "\e[100m  #{char}  \e[0m"
-    elsif color == "dark"
+    if color == "dark"
       "\e[41m  #{char}  \e[0m"
-    elsif color == "green"
-      "\e[42m  #{char}  \e[0m"
     elsif color == "light"
       "\e[43m  #{char}  \e[0m"
     end

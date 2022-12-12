@@ -60,13 +60,6 @@ class Pawn < Piece
       move.captured_piece_square = captured_piece_square
       move.do
 
-      # captured_piece.is_captured = true
-      # captured_piece.square = nil
-      # captured_piece_square.piece = nil
-      # start_square.piece = nil
-      # end_square.piece = self
-      # @square = end_square
-
       move
     else
       super
@@ -75,17 +68,6 @@ class Pawn < Piece
 
   def undo_move(move)
     move.undo
-    # if move.type == "ep"
-    #   # en passant
-    #   @square = move.start_square
-    #   move.end_square.piece = nil
-    #   move.start_square.piece = self
-    #   move.captured_piece_square.piece = move.captured_piece
-    #   move.captured_piece.square = move.captured_piece_square
-    #   move.captured_piece.is_captured = false
-    # else
-    #   super
-    # end
   end
 
   def fwd_square

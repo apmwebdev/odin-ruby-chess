@@ -77,4 +77,25 @@ class Pieces
   def get_piece_at(coord_or_id)
     @board.get_square(coord_or_id).piece
   end
+
+  def promote_pawn(pawn, choice)
+    square = pawn.square
+    color = pawn.color
+    piece = case choice
+    when "q"
+      Queen.new(color, square)
+    when "r"
+      Rook.new(color, square)
+    when "b"
+      Bishop.new(color, square)
+    else
+      Knight.new(color, square)
+    end
+    pawn.promoted_to = piece
+    piece.promoted_from = pawn
+    square.piece = piece
+    pawn.square = nil
+    register_piece(piece)
+    piece
+  end
 end

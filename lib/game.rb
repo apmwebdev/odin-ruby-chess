@@ -38,7 +38,9 @@ class Game
   def show_turn_instructions(player)
     return_str = "'s turn. Enter your move and hit Enter.\n"
     return_str += "To enter a move, type the current position of the piece, "
-    return_str += " then the ending position, e.g. 'e2e4'"
+    return_str += " then the ending position, e.g. 'e2e4'.\n"
+    return_str += "For castling, enter the start and end square for the king, "
+    return_str += "e.g. 'e1g1'."
     "#{player.color.capitalize}#{return_str}"
   end
 
@@ -49,6 +51,13 @@ class Game
   end
 
   def check_game_status(current_player)
+    if can_promote_pawn?
+      pawn = @move_log.last.piece
+      choice = current_player.input.get_promotion_choice
+      promotion = @pieces.promote_pawn(pawn, choice)
+      @move_log.last.promotion = promotion
+      @move_log.last.save_game_state
+    end
     if player_is_in_check?(current_player.opponent)
       unless player_can_move?(current_player.opponent)
         return declare_winner(current_player)
@@ -174,5 +183,11 @@ class Game
     #   item => {ep_piece:, ep_end_square:, victim:}
     #   puts "ep_piece: #{ep_piece.name}, ep_end_square: #{ep_end_square.id}, victim: #{victim.name}"
     # end
+  end
+
+  def can_promote_pawn?
+    move = @move_log.last
+    move_rank = move.end_square.coord[1]
+    move.piece.name == "Pawn" && move_rank == move.piece.promotion_rank
   end
 end

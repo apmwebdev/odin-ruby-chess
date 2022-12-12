@@ -15,7 +15,7 @@ class Input
     loop do
       input = gets.chomp
       input.downcase!
-      if valid_input?(input)
+      if valid_move_input?(input)
         valid_move = valid_move?(input)
         return valid_move if valid_move
       end
@@ -23,7 +23,7 @@ class Input
     end
   end
 
-  def valid_input?(input)
+  def valid_move_input?(input)
     return false if input.length != 4
     return false unless input.match?(/^[a-h][1-8][a-h][1-8]$/)
     return false if input[0..1] == input[2..3]
@@ -51,6 +51,23 @@ class Input
       return false
     end
     [start_coord, end_coord]
+  end
+
+  def get_promotion_choice
+    loop do
+      puts_str = "Choose promotion: Enter q for queen, r for rook, b for bishop, "
+      puts_str += "or n for knight."
+      puts puts_str
+      input = gets.chomp
+      input.downcase!
+      return input if valid_promotion_input?(input)
+
+      puts "Input error! Please enter a valid promotion choice"
+    end
+  end
+
+  def valid_promotion_input?(input)
+    /^[qrbn]$/.match?(input)
   end
 
   def would_be_in_check?(piece, end_coord)

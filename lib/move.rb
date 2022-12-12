@@ -3,7 +3,7 @@
 class Move
   attr_reader :piece, :start_square, :end_square, :type, :game
   attr_accessor :captured_piece, :has_moved_prior, :rook, :r_start_square,
-    :r_end_square, :captured_piece_square, :game_state_after
+    :r_end_square, :captured_piece_square, :game_state_after, :promotion
 
   def initialize(piece, start_square, end_square, type, game)
     @piece = piece

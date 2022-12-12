@@ -10,4 +10,11 @@ class Square
     @coord = coord
     @board = board
   end
+
+  def serialize
+    {
+      id: @id,
+      piece: @piece ? @piece.serialize : nil
+    }
+  end
 end

@@ -22,7 +22,6 @@ class Move
     when "ep"
       do_en_passant_move
     end
-    save_game_state
   end
 
   def undo
@@ -37,37 +36,37 @@ class Move
   end
 
   def save_game_state
-    state = "Squares and pieces:"
-    @game.board.squares.each do |square|
-      state += "#{square.id}: "
-      state += if square.piece
-        "#{square.piece.name} #{square.piece.color[0]} "
-      else
-        "- "
-      end
-    end
-    state = state.strip
-    state += ". Castling rights: "
-    c_rights = @game.get_castling_rights
-    state += "White can castle kingside: #{c_rights[:white_can_ks_castle]}. "
-    state += "White can castle queenside: #{c_rights[:white_can_qs_castle]}. "
-    state += "Black can castle kingside: #{c_rights[:black_can_ks_castle]}. "
-    state += "Black can castle queenside: #{c_rights[:black_can_qs_castle]}. "
-
-    state += "En passant rights: "
-    ep_rights = @game.get_en_passant_rights
-    if !ep_rights.empty?
-      ep_rights.each do |ep|
-        ep => {ep_piece:, victim:}
-        ep_start_sq = ep_piece.square.id
-        victim_sq = victim.square.id
-        state += "Pawn at #{ep_start_sq} can en passant capture #{victim_sq}. "
-      end
-    else
-      state += "-"
-    end
-    state = state.strip
-    @game_state_after = state
+    @game_state_after = @game.serializer.serialize_game_data
+    # state = "Squares and pieces:"
+    # @game.board.squares.each do |square|
+    #   state += "#{square.id}: "
+    #   state += if square.piece
+    #     "#{square.piece.name} #{square.piece.color[0]} "
+    #   else
+    #     "- "
+    #   end
+    # end
+    # state = state.strip
+    # state += ". Castling rights: "
+    # c_rights = @game.get_castling_rights
+    # state += "White can castle kingside: #{c_rights[:white_can_ks_castle]}. "
+    # state += "White can castle queenside: #{c_rights[:white_can_qs_castle]}. "
+    # state += "Black can castle kingside: #{c_rights[:black_can_ks_castle]}. "
+    # state += "Black can castle queenside: #{c_rights[:black_can_qs_castle]}. "
+    #
+    # state += "En passant rights: "
+    # ep_rights = @game.get_en_passant_rights
+    # if !ep_rights.empty?
+    #   ep_rights.each do |ep|
+    #     ep => {ep_piece:, victim:}
+    #     ep_start_sq = ep_piece.square.id
+    #     victim_sq = victim.square.id
+    #     state += "Pawn at #{ep_start_sq} can en passant capture #{victim_sq}. "
+    #   end
+    # else
+    #   state += "-"
+    # end
+    # state = state.strip
   end
 
   def do_normal_move
@@ -126,5 +125,15 @@ class Move
     @captured_piece_square.piece = @captured_piece
     @captured_piece.square = @captured_piece_square
     @captured_piece.is_captured = false
+  end
+
+  def serialize
+    {
+      piece: @piece.serialize,
+      start_square: @start_square.id,
+      end_square: @end_square.id,
+      type: @type,
+      captured_piece: @captured_piece ? @captured_piece.serialize : nil
+    }
   end
 end

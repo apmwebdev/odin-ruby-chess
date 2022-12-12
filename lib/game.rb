@@ -2,7 +2,7 @@
 
 class Game
   attr_reader :board, :pieces, :white_player, :black_player, :move_log,
-    :output
+    :output, :serializer
   attr_accessor :game_over
 
   WHITE = "white"
@@ -16,6 +16,7 @@ class Game
     @black_player.opponent = @white_player
     @pieces = Pieces.new(self)
     @output = Output.new(self)
+    @serializer = Serializer.new(self)
     @move_log = []
     @game_over = false
   end
@@ -45,16 +46,19 @@ class Game
     return_str += "- To enter a move, type the current position of the piece, "
     return_str += "then the ending\nposition, e.g. 'e2e4'.\n"
     return_str += "- For castling, enter the start and end square for the king, "
-    return_str += "e.g. 'e1g1'."
+    return_str += "e.g. 'e1g1'.\n"
+    return_str += "- To save the game, enter 's'. To load a game, enter 'l'."
     return_str = "\n#{player.color.capitalize}#{return_str}\n\n"
     puts return_str
     declare_check(player) if player_is_in_check?(player)
   end
 
   def take_turn(player)
-    valid_move = player.get_move
-    @move_log.push(@pieces.get_piece_at(valid_move[0]).move_to(valid_move[1]))
+    valid_input = player.get_move
+    move = @pieces.get_piece_at(valid_input[0]).move_to(valid_input[1])
+    @move_log.push(move)
     player.turns_taken += 1
+    move.save_game_state
   end
 
   def check_game_status(current_player)

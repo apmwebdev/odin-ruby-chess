@@ -15,7 +15,12 @@ class Input
     loop do
       input = gets.chomp
       input.downcase!
-      if valid_move_input?(input)
+      if input == "s"
+        @game.serializer.save_game
+        next
+      elsif input == "l"
+        return @game.serializer.load_game
+      elsif valid_move_input?(input)
         valid_move = valid_move?(input)
         return valid_move if valid_move
       end

@@ -71,4 +71,12 @@ class Piece
   def undo_move(move)
     move.undo
   end
+
+  def serialize
+    {
+      name: @name,
+      color: @color,
+      has_moved: @has_moved
+    }
+  end
 end

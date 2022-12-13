@@ -41,36 +41,6 @@ class Move
   def save_game_state
     game_state = @game.serializer.serialize_board_and_rights
     @game_state_checksum = Digest::MD5.hexdigest(game_state.to_json)
-    # state = "Squares and pieces:"
-    # @game.board.squares.each do |square|
-    #   state += "#{square.id}: "
-    #   state += if square.piece
-    #     "#{square.piece.name} #{square.piece.color[0]} "
-    #   else
-    #     "- "
-    #   end
-    # end
-    # state = state.strip
-    # state += ". Castling rights: "
-    # c_rights = @game.get_castling_rights
-    # state += "White can castle kingside: #{c_rights[:white_can_ks_castle]}. "
-    # state += "White can castle queenside: #{c_rights[:white_can_qs_castle]}. "
-    # state += "Black can castle kingside: #{c_rights[:black_can_ks_castle]}. "
-    # state += "Black can castle queenside: #{c_rights[:black_can_qs_castle]}. "
-    #
-    # state += "En passant rights: "
-    # ep_rights = @game.get_en_passant_rights
-    # if !ep_rights.empty?
-    #   ep_rights.each do |ep|
-    #     ep => {ep_piece:, victim:}
-    #     ep_start_sq = ep_piece.square.id
-    #     victim_sq = victim.square.id
-    #     state += "Pawn at #{ep_start_sq} can en passant capture #{victim_sq}. "
-    #   end
-    # else
-    #   state += "-"
-    # end
-    # state = state.strip
   end
 
   def do_normal_move

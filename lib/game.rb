@@ -27,7 +27,7 @@ class Game
   end
 
   def play_game
-    until @break_play_loop
+    loop do
       @output.clear_screen
       @output.render_board
       current_player = if @white_player.turns_taken == @black_player.turns_taken
@@ -38,6 +38,7 @@ class Game
       show_turn_instructions(current_player)
       take_turn(current_player)
       check_game_status(current_player)
+      break if @break_play_loop
     end
   end
 

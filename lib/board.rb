@@ -26,9 +26,9 @@ class Board
 
   def get_square(query)
     if query.is_a?(Array)
-      @squares.find { |square| square.coord == query }
+      @squares.find(proc {}) { |square| square.coord == query }
     else
-      @squares.find { |square| square.id == query }
+      @squares.find(proc {}) { |square| square.id == query }
     end
   end
 

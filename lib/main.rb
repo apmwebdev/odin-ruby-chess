@@ -22,4 +22,3 @@ game.start_game
 # Add threefold repetition draw rule?
 # Add fifty-move draw rule?
 # Add dead position draw rule?
-# Add save support

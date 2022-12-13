@@ -79,4 +79,10 @@ class Piece
       has_moved: @has_moved
     }
   end
+
+  def to_s
+    return_str = "Piece: name: #{@name}, color: #{@color}, "
+    return_str += "has_moved: #{@has_moved}, square: #{@square.id}"
+    return_str
+  end
 end

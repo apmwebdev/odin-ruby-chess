@@ -54,10 +54,7 @@ class Pieces
         # Intentionally empty. Present to prevent error
       end
     end
-    @game.white_player.pieces = @white_pieces
-    @game.white_player.king = @white_king
-    @game.black_player.pieces = @black_pieces
-    @game.black_player.king = @black_king
+    set_player_data
   end
 
   def register_piece(piece)
@@ -72,6 +69,13 @@ class Pieces
       @black_king = piece if piece.name == "King"
       piece.player = @game.black_player
     end
+  end
+
+  def set_player_data
+    @game.white_player.pieces = @white_pieces
+    @game.white_player.king = @white_king
+    @game.black_player.pieces = @black_pieces
+    @game.black_player.king = @black_king
   end
 
   def get_piece_at(coord_or_id)

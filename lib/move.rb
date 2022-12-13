@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require "json"
+require "digest/md5"
+
 class Move
   attr_reader :piece, :start_square, :end_square, :type, :game
   attr_accessor :captured_piece, :has_moved_prior, :rook, :r_start_square,
-    :r_end_square, :captured_piece_square, :game_state_after, :promotion
+    :r_end_square, :captured_piece_square, :promotion, :game_state_checksum
 
   def initialize(piece, start_square, end_square, type, game)
     @piece = piece
@@ -36,7 +39,8 @@ class Move
   end
 
   def save_game_state
-    @game_state_after = @game.serializer.serialize_game_data
+    game_state = @game.serializer.serialize_board_and_rights
+    @game_state_checksum = Digest::MD5.hexdigest(game_state.to_json)
     # state = "Squares and pieces:"
     # @game.board.squares.each do |square|
     #   state += "#{square.id}: "
@@ -133,7 +137,9 @@ class Move
       start_square: @start_square.id,
       end_square: @end_square.id,
       type: @type,
-      captured_piece: @captured_piece ? @captured_piece.serialize : nil
+      has_moved_prior: @has_moved_prior,
+      promotion: @promotion ? @promotion.serialize : nil,
+      game_state_checksum: @game_state_checksum
     }
   end
 end

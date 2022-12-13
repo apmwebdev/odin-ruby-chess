@@ -19,7 +19,7 @@ class Input
         @game.serializer.save_game
         next
       elsif input == "l"
-        return @game.serializer.load_game
+        return "l"
       elsif valid_move_input?(input)
         valid_move = valid_move?(input)
         return valid_move if valid_move

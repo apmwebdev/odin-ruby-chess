@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Game
-  attr_reader :board, :pieces, :white_player, :black_player, :move_log,
-    :output, :serializer
-  attr_accessor :game_over
+  attr_reader :board, :pieces, :white_player, :black_player, :output,
+    :serializer
+  attr_accessor :break_play_loop, :move_log
 
   WHITE = "white"
   BLACK = "black"
@@ -18,7 +18,7 @@ class Game
     @output = Output.new(self)
     @serializer = Serializer.new(self)
     @move_log = []
-    @game_over = false
+    @break_play_loop = false
   end
 
   def start_game
@@ -27,7 +27,7 @@ class Game
   end
 
   def play_game
-    until @game_over
+    until @break_play_loop
       @output.clear_screen
       @output.render_board
       current_player = if @white_player.turns_taken == @black_player.turns_taken
@@ -55,6 +55,9 @@ class Game
 
   def take_turn(player)
     valid_input = player.get_move
+    if valid_input == "l"
+      return load_game
+    end
     move = @pieces.get_piece_at(valid_input[0]).move_to(valid_input[1])
     @move_log.push(move)
     player.turns_taken += 1
@@ -111,7 +114,7 @@ class Game
     @output.clear_screen
     @output.render_board
     puts "#{player.color.capitalize} wins!"
-    @game_over = true
+    @break_play_loop = true
   end
 
   def declare_check(player)
@@ -122,7 +125,7 @@ class Game
     @output.clear_screen
     @output.render_board
     puts "Stalemate. The game is a draw"
-    @game_over = true
+    @break_play_loop = true
   end
 
   def get_castling_rights
@@ -191,7 +194,11 @@ class Game
           ep_end_rank = (move.start_square.coord[1] + move.end_square.coord[1]) / 2
           ep_end_file = move.end_square.coord[0]
           ep_end_square = @board.get_square([ep_end_file, ep_end_rank])
-          ep_data = {ep_piece:, ep_end_square:, victim: move.piece}
+          ep_data = {
+            start_square: ep_piece.square,
+            end_square: ep_end_square,
+            capture_square: move.end_square
+          }
           result_array.push(ep_data)
         end
       end
@@ -202,6 +209,11 @@ class Game
   def can_promote_pawn?
     move = @move_log.last
     move_rank = move.end_square.coord[1]
-    move.piece.name == "Pawn" && move_rank == move.piece.promotion_rank
+    move.piece.name == "Pawn" && move_rank == move.piece.promotion_rank &&
+      move.promotion.nil?
+  end
+
+  def load_game
+    @serializer.load_game
   end
 end

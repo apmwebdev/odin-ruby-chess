@@ -6,7 +6,7 @@ require "digest/md5"
 class Move
   attr_reader :piece, :start_square, :end_square, :type, :game
   attr_accessor :captured_piece, :has_moved_prior, :rook, :r_start_square,
-    :r_end_square, :captured_piece_square, :promotion, :game_state_checksum
+    :r_end_square, :captured_square, :promotion, :game_state_checksum
 
   def initialize(piece, start_square, end_square, type, game)
     @piece = piece
@@ -62,9 +62,9 @@ class Move
   end
 
   def do_castle_move
-    @piece.square.piece = nil
+    @start_square.piece = nil
     @end_square.piece = @piece
-    @piece.square = end_square
+    @piece.square = @end_square
     @piece.has_moved = true
     @r_start_square.piece = nil
     @r_end_square.piece = @rook
@@ -86,7 +86,7 @@ class Move
   def do_en_passant_move
     @captured_piece.is_captured = true
     @captured_piece.square = nil
-    @captured_piece_square.piece = nil
+    @captured_square.piece = nil
     @start_square.piece = nil
     @end_square.piece = @piece
     @piece.square = @end_square
@@ -96,8 +96,8 @@ class Move
     @piece.square = @start_square
     @end_square.piece = nil
     @start_square.piece = @piece
-    @captured_piece_square.piece = @captured_piece
-    @captured_piece.square = @captured_piece_square
+    @captured_square.piece = @captured_piece
+    @captured_piece.square = @captured_square
     @captured_piece.is_captured = false
   end
 

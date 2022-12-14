@@ -57,7 +57,7 @@ class Pawn < Piece
 
       move = Move.new(self, start_square, end_square, "ep", @game)
       move.captured_piece = captured_piece
-      move.captured_piece_square = captured_piece_square
+      move.captured_square = captured_piece_square
       move.do_move
 
       move

@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "../lib/game"
 require_relative "../lib/board"
-require_relative "../lib/square"
+require_relative "../lib/game"
 require_relative "../lib/input"
+require_relative "../lib/move"
+require_relative "../lib/output"
 require_relative "../lib/piece"
 require_relative "../lib/pieces"
 require_relative "../lib/player"
-require_relative "../lib/output"
+require_relative "../lib/serializer"
+require_relative "../lib/square"
 require_relative "../lib/piece/bishop"
 require_relative "../lib/piece/king"
 require_relative "../lib/piece/knight"
@@ -164,5 +166,3 @@ def castling_test
   g1.piece = nil
   game.play_game
 end
-
-castling_test

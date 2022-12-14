@@ -134,21 +134,18 @@ class Game
   end
 
   def get_castling_rights
-    white_can_ks_castle, white_can_qs_castle = false, false
-    black_can_ks_castle, black_can_qs_castle = false, false
-    unless @white_player.king.has_moved || player_is_in_check?(@white_player)
-      white_can_qs_castle = player_can_castle?(@white_player, "a1")
-      white_can_ks_castle = player_can_castle?(@white_player, "h1")
-    end
-    unless @black_player.king.has_moved || player_is_in_check?(@black_player)
-      black_can_qs_castle = player_can_castle?(@black_player, "a8")
-      black_can_ks_castle = player_can_castle?(@black_player, "h8")
-    end
+    white_can_qs_castle = player_can_castle?(@white_player, "a1")
+    white_can_ks_castle = player_can_castle?(@white_player, "h1")
+    black_can_qs_castle = player_can_castle?(@black_player, "a8")
+    black_can_ks_castle = player_can_castle?(@black_player, "h8")
     {white_can_ks_castle:, white_can_qs_castle:, black_can_ks_castle:,
      black_can_qs_castle:}
   end
 
   def player_can_castle?(player, rook_coord)
+    return false if player.king.has_moved
+    return false if player_is_in_check?(player)
+
     if rook_coord == "a1"
       a1_piece = @pieces.get_piece_at("a1")
       return false if !a1_piece || a1_piece.has_moved

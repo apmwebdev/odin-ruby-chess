@@ -145,10 +145,10 @@ class Game
   def player_can_castle?(player, rook_coord)
     return false if player.king.has_moved
     return false if player_is_in_check?(player)
+    rook_coord_piece = get_piece_at(rook_coord)
+    return false if !rook_coord_piece || rook_coord_piece.has_moved
 
     if rook_coord == "a1"
-      a1_piece = @pieces.get_piece_at("a1")
-      return false if !a1_piece || a1_piece.has_moved
       return false unless @pieces.get_piece_at("d1").nil?
       return false unless @pieces.get_piece_at("c1").nil?
       return false unless @pieces.get_piece_at("b1").nil?
@@ -156,16 +156,12 @@ class Game
       return false if player_can_attack_square?(player.opponent, "c1")
       true
     elsif rook_coord == "h1"
-      h1_piece = @pieces.get_piece_at("h1")
-      return false if !h1_piece || h1_piece.has_moved
       return false unless @pieces.get_piece_at("f1").nil?
       return false unless @pieces.get_piece_at("g1").nil?
       return false if player_can_attack_square?(player.opponent, "f1")
       return false if player_can_attack_square?(player.opponent, "g1")
       true
     elsif rook_coord == "a8"
-      a8_piece = @pieces.get_piece_at("a8")
-      return false if !a8_piece || a8_piece.has_moved
       return false unless @pieces.get_piece_at("d8").nil?
       return false unless @pieces.get_piece_at("c8").nil?
       return false unless @pieces.get_piece_at("b8").nil?
@@ -173,8 +169,6 @@ class Game
       return false if player_can_attack_square?(player.opponent, "c8")
       true
     elsif rook_coord == "h8"
-      h8_piece = @pieces.get_piece_at("h8")
-      return false if !h8_piece || h8_piece.has_moved
       return false unless @pieces.get_piece_at("f8").nil?
       return false unless @pieces.get_piece_at("g8").nil?
       return false if player_can_attack_square?(player.opponent, "f8")

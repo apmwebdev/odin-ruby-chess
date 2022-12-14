@@ -66,10 +66,6 @@ class Pawn < Piece
     end
   end
 
-  def undo_move(move)
-    move.undo
-  end
-
   def fwd_square
     (@color == WHITE) ? @square.up : @square.down
   end

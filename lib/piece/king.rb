@@ -12,7 +12,7 @@ class King < Piece
     moves.reject! do |new_square|
       potential_move = move_to(new_square.coord)
       in_check = @game.player_is_in_check?(@player)
-      undo_move(potential_move)
+      potential_move.undo
       in_check
     end
 
@@ -63,10 +63,6 @@ class King < Piece
     move.do_move
 
     move
-  end
-
-  def undo_move(move)
-    move.undo
   end
 
   def get_square(coord_or_id)

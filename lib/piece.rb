@@ -68,10 +68,6 @@ class Piece
     move
   end
 
-  def undo_move(move)
-    move.undo
-  end
-
   def serialize
     {
       name: @name,

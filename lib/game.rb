@@ -70,13 +70,7 @@ class Game
   end
 
   def check_game_status(current_player)
-    if can_promote_pawn?
-      pawn = @move_log.last.piece
-      choice = current_player.input.get_promotion_choice
-      promotion = @pieces.promote_pawn(pawn, choice)
-      @move_log.last.promotion = promotion
-      @move_log.last.save_game_state
-    end
+    promote_pawn(current_player) if can_promote_pawn?
     if player_is_in_check?(current_player.opponent)
       unless player_can_move?(current_player.opponent)
         declare_winner(current_player)
@@ -84,6 +78,14 @@ class Game
     else
       return declare_stalemate unless player_can_move?(current_player.opponent)
     end
+  end
+
+  def promote_pawn(current_player)
+    pawn = @move_log.last.piece
+    choice = current_player.input.get_promotion_choice
+    promotion = @pieces.promote_pawn(pawn, choice)
+    @move_log.last.promotion = promotion
+    @move_log.last.save_game_state
   end
 
   def player_is_in_check?(player)

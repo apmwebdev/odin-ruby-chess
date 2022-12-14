@@ -206,6 +206,7 @@ class Game
 
   def can_promote_pawn?
     move = @move_log.last
+    return false unless move
     move_rank = move.end_square.coord[1]
     move.piece.name == "Pawn" && move_rank == move.piece.promotion_rank &&
       move.promotion.nil?

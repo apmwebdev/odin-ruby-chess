@@ -63,7 +63,7 @@ class Piece
     move = Move.new(self, start_square, end_square, "normal", @game)
     move.has_moved_prior = has_moved_prior
     move.captured_piece = captured_piece
-    move.do
+    move.do_move
 
     move
   end

@@ -16,7 +16,7 @@ class Move
     @game = game
   end
 
-  def do
+  def do_move
     case @type
     when "normal"
       do_normal_move

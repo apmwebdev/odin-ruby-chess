@@ -218,4 +218,14 @@ class Game
   def load_game
     @serializer.load_game
   end
+
+  # TODO: Refactor calls to use these two methods instead of the downstream ones
+
+  def get_square(coord_or_id)
+    @board.get_square(coord_or_id)
+  end
+
+  def get_piece_at(coord_or_id)
+    @pieces.get_piece_at(coord_or_id)
+  end
 end

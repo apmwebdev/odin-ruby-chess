@@ -75,8 +75,8 @@ class Game
       unless player_can_move?(current_player.opponent)
         declare_winner(current_player)
       end
-    else
-      return declare_stalemate unless player_can_move?(current_player.opponent)
+    elsif !player_can_move?(current_player.opponent)
+      declare_stalemate
     end
   end
 

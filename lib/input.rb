@@ -17,8 +17,8 @@ class Input
       input.downcase!
       if input == "s" || input == "l"
         return input
-      elsif valid_move_input?(input)
-        valid_move = valid_move?(input)
+      else
+        valid_move = valid_move_input?(input)
         return valid_move if valid_move
       end
       puts "Input error! Please enter a valid move"
@@ -26,13 +26,18 @@ class Input
   end
 
   def valid_move_input?(input)
-    return false if input.length != 4
-    return false unless input.match?(/^[a-h][1-8][a-h][1-8]$/)
-    return false if input[0..1] == input[2..3]
-    true
-  end
-
-  def valid_move?(input)
+    unless input.length == 4
+      puts "Input should be 4 characters (start coordinate + end coordinate)"
+      return false
+    end
+    unless input.match?(/^[a-h][1-8][a-h][1-8]$/)
+      puts "Invalid input format. Input should be start + end coordinates"
+      return false
+    end
+    if input[0..1] == input[2..3]
+      puts "Start and end coordinates must be different"
+      return false
+    end
     start_coord = input[0..1]
     end_coord = input[2..3]
     piece = @game.pieces.get_piece_at(start_coord)

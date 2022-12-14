@@ -62,8 +62,8 @@ class Input
 
   def get_promotion_choice
     loop do
-      puts_str = "Choose promotion: Enter q for queen, r for rook, b for bishop, "
-      puts_str += "or n for knight."
+      puts_str = "Choose promotion: Enter q for queen, r for rook, b for "
+      puts_str += "bishop, or n for knight."
       puts puts_str
       input = gets.chomp
       input.downcase!

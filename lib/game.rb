@@ -60,13 +60,17 @@ class Game
 
   def take_turn(player)
     valid_input = player.get_move
-    if valid_input == "l"
-      return load_game
+    if valid_input == "s"
+      @serializer.save_game
+      take_turn(player)
+    elsif valid_input == "l"
+      load_game
+    else
+      move = @pieces.get_piece_at(valid_input[0]).move_to(valid_input[1])
+      @move_log.push(move)
+      player.turns_taken += 1
+      move.save_game_state
     end
-    move = @pieces.get_piece_at(valid_input[0]).move_to(valid_input[1])
-    @move_log.push(move)
-    player.turns_taken += 1
-    move.save_game_state
   end
 
   def check_game_status(current_player)
@@ -214,6 +218,10 @@ class Game
 
   def load_game
     @serializer.load_game
+    @output.clear_screen
+    @output.render_board
+    puts "\nGame loaded! Press Enter to continue"
+    gets
   end
 
   # TODO: Refactor calls to use these two methods instead of the downstream ones

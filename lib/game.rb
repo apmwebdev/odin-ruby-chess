@@ -10,15 +10,19 @@ class Game
 
   def initialize
     @board = Board.new
-    @white_player = Player.new(WHITE, self)
-    @black_player = Player.new(BLACK, self)
-    @white_player.opponent = @black_player
-    @black_player.opponent = @white_player
+    register_players
     @pieces = Pieces.new(self)
     @output = Output.new(self)
     @serializer = Serializer.new(self)
     @move_log = []
     @break_play_loop = false
+  end
+
+  def register_players
+    @white_player = Player.new(WHITE, self)
+    @black_player = Player.new(BLACK, self)
+    @white_player.opponent = @black_player
+    @black_player.opponent = @white_player
   end
 
   def start_game

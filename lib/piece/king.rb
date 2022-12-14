@@ -60,34 +60,13 @@ class King < Piece
     move = Move.new(self, @square, end_square, "castle", @game)
     move.rook = rook
     move.r_start_square, move.r_end_square = r_start_square, r_end_square
-    move.do
-
-    # @square.piece = nil
-    # end_square.piece = self
-    # @square = end_square
-    # @has_moved = true
-    # r_start_square.piece = nil
-    # r_end_square.piece = rook
-    # rook.square = r_end_square
-    # rook.has_moved = true
+    move.do_move
 
     move
   end
 
   def undo_move(move)
     move.undo
-    # if move.type == "castle"
-    #   move.rook.has_moved = false
-    #   move.rook.square = move.r_start_square
-    #   move.r_end_square.piece = nil
-    #   move.r_start_square.piece = move.rook
-    #   @has_moved = false
-    #   @square = move.start_square
-    #   move.end_square.piece = nil
-    #   @square.piece = self
-    # else
-    #   super
-    # end
   end
 
   def get_square(coord_or_id)

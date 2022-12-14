@@ -86,6 +86,9 @@ class Game
 
   def promote_pawn(current_player)
     pawn = @move_log.last.piece
+    puts_str = "Choose promotion: Enter q for queen, r for rook, b for bishop, "
+    puts_str += "or n for knight."
+    puts puts_str
     choice = current_player.input.get_promotion_choice
     promotion = @pieces.promote_pawn(pawn, choice)
     @move_log.last.promotion = promotion

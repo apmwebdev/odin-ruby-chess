@@ -22,3 +22,7 @@ game.start_game
 # Add threefold repetition draw rule?
 # Add fifty-move draw rule?
 # Add dead position draw rule?
+# Testing:
+# - Serializer - many tests
+# - All the individual pieces, at least to confirm that valid moves and
+#   movement work.

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../game"
+require "json"
 
 class Pawn < Piece
   WHITE = Game::WHITE
@@ -21,7 +22,7 @@ class Pawn < Piece
     # Forward left capture or en passant
     unless en_passant_rights.empty?
       fwd_left_ep = en_passant_rights.find do |ep|
-        ep[:start_square] == @square && ep[:ep_end_square] == fwd_left_square
+        ep[:start_square] == @square && ep[:end_square] == fwd_left_square
       end
     end
     if (fwd_left_square&.piece && fwd_left_square.piece.color != @color) ||

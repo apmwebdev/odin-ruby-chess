@@ -32,7 +32,7 @@ class Pawn < Piece
     # Forward right capture or en passant
     unless en_passant_rights.empty?
       fwd_right_ep = en_passant_rights.find do |ep|
-        ep[:start_square] == @square && ep[:ep_end_square] == fwd_right_square
+        ep[:start_square] == @square && ep[:end_square] == fwd_right_square
       end
     end
     if (fwd_right_square&.piece && fwd_right_square.piece.color != @color) ||

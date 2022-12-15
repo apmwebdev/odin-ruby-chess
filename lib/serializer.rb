@@ -103,7 +103,6 @@ class Serializer
   def load_game
     file_contents = get_file_to_load
     return unless file_contents
-    # p file_contents
     reset_game_data
     squares_data = file_contents["squares"]
     moves_data = file_contents["moves"]
@@ -113,6 +112,25 @@ class Serializer
     load_moves(moves_data)
     @game.white_player.turns_taken = players_data["white"]
     @game.black_player.turns_taken = players_data["black"]
+  end
+
+  def get_file_to_load
+    puts "Enter file name to load (c to cancel):"
+    file_name_input = gets.chomp
+    if file_name_input == "c"
+      puts "Load canceled"
+      return puts continue_text
+    end
+    file_name = "saved_games/#{file_name_input}.json"
+    if File.exist?(file_name)
+      save_file = File.open(file_name, "r")
+      save_file_contents = save_file.read
+      save_file.close
+      JSON.parse(save_file_contents)
+    else
+      puts "Load error: File not found"
+      get_file_to_load
+    end
   end
 
   def reset_game_data
@@ -183,24 +201,5 @@ class Serializer
     end
     piece.has_moved = has_moved
     piece
-  end
-
-  def get_file_to_load
-    puts "Enter file name to load (c to cancel):"
-    file_name_input = gets.chomp
-    if file_name_input == "c"
-      puts "Load canceled"
-      return puts continue_text
-    end
-    file_name = "saved_games/#{file_name_input}.json"
-    if File.exist?(file_name)
-      save_file = File.open(file_name, "r")
-      save_file_contents = save_file.read
-      save_file.close
-      JSON.parse(save_file_contents)
-    else
-      puts "Load error: File not found"
-      get_file_to_load
-    end
   end
 end

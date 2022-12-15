@@ -42,51 +42,62 @@ class Serializer
 
   def save_game
     move_log = @game.move_log
-    if move_log.empty?
-      return puts "Save error: No data to save"
-    end
-
+    return puts "Save error: No data to save" if move_log.empty?
     file_name_input = ""
     loop do
-      puts "Enter a filename with no file extension (c to cancel):"
-      file_name_input = gets.chomp
-      if file_name_input == ""
-        puts "Save error: Invalid save file name"
-      elsif file_name_input == "c"
-        puts "Save canceled"
-        puts continue_text
-        return
-      else
-        break
-      end
+      file_name_input = get_save_file_name
+      return if file_name_input == "c"
+      break if file_name_input.length > 0
     end
-
     save_data = serialize_game_data.to_json
-    file_name = "saved_games/#{file_name_input}.json"
+    file_name = get_file_name_from_input(file_name_input)
     if File.exist?(file_name)
-      puts_str = "A file already exists with this name. Overwrite? "
-      puts_str += "(y or n, c to cancel)"
-      puts puts_str
-      answer = gets.chomp
-      if answer == "y"
-        File.truncate(file_name, 0)
-        File.open(file_name, "w") { |file| file.puts save_data }
-        puts "Game saved!"
-        puts continue_text
-      elsif answer == "n"
-        save_game
-      elsif answer == "c"
-        puts "Save canceled"
-        puts continue_text
-      else
-        puts "Save error: Invalid selection"
-        save_game
-      end
+      get_existing_save_file_choice(file_name, save_data)
     else
-      File.open(file_name, "w") { |file| file.puts save_data }
-      puts "Game saved!"
+      write_save_file(file_name, save_data)
+    end
+  end
+
+  def get_file_name_from_input(input)
+    "saved_games/#{input}.json"
+  end
+
+  def get_save_file_name
+    puts "Enter a filename with no file extension (c to cancel):"
+    file_name_input = gets.chomp
+    if file_name_input == ""
+      puts "Save error: Invalid save file name"
+    elsif file_name_input == "c"
+      puts "Save canceled"
       puts continue_text
     end
+    file_name_input
+  end
+
+  def get_existing_save_file_choice(file_name, save_data)
+    loop do
+      puts_str = "A file already exists with this name. Overwrite?"
+      puts_str += "\no to overwrite\nn to use a different name\nc to cancel"
+      puts puts_str
+      answer = gets.chomp
+      if answer == "o"
+        File.truncate(file_name, 0)
+        return write_save_file(file_name, save_data)
+      elsif answer == "n"
+        return save_game
+      elsif answer == "c"
+        puts "Save canceled"
+        return puts continue_text
+      else
+        puts "Save error: Invalid selection"
+      end
+    end
+  end
+
+  def write_save_file(file_name, save_data)
+    File.open(file_name, "w") { |file| file.puts save_data }
+    puts "Game saved!"
+    puts continue_text
   end
 
   def load_game

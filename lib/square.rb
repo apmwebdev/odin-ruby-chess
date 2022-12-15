@@ -17,7 +17,7 @@ class Square
       piece: @piece ? @piece.serialize : nil
     }
   end
-  
+
   def to_s
     return_str = "Square: id: #{@id}, color: #{@color}, piece: "
     return_str += if @piece

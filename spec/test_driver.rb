@@ -109,7 +109,7 @@ end
 
 def check_en_passant
   game = Game.new
-  game.start_game
+  game.pieces.register_pieces
   e2 = game.pieces.get_piece_at("e2")
   d7 = game.pieces.get_piece_at("d7")
   f7 = game.pieces.get_piece_at("f7")
@@ -166,3 +166,5 @@ def castling_test
   g1.piece = nil
   game.play_game
 end
+
+check_en_passant

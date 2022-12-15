@@ -77,7 +77,7 @@ class Serializer
   def get_existing_save_file_choice(file_name, save_data)
     loop do
       puts_str = "A file already exists with this name. Overwrite?"
-      puts_str += "\no to overwrite\nn to use a different name\nc to cancel"
+      puts_str += "\n\no to overwrite\nn to use a different name\nc to cancel"
       puts puts_str
       answer = gets.chomp
       if answer == "o"
@@ -89,7 +89,7 @@ class Serializer
         puts "Save canceled"
         return puts continue_text
       else
-        puts "Save error: Invalid selection"
+        return puts "Save error: Invalid selection"
       end
     end
   end

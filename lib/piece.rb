@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "move"
-
 class Piece
   attr_accessor :has_moved, :is_captured, :square, :game, :player, :promoted_to,
     :promoted_from

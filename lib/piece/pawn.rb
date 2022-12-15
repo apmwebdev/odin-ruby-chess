@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../game"
-require "json"
-
 class Pawn < Piece
   WHITE = Game::WHITE
 

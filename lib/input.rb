@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "game"
-require_relative "board"
-
 class Input
   attr_reader :player, :game
 

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "game"
-require_relative "input"
-
 class Player
   attr_accessor :turns_taken, :pieces, :king, :opponent
   attr_reader :color, :goes_first, :game, :input

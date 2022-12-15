@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "game"
-
 class Output
   attr_reader :game, :rows
 

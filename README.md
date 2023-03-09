@@ -4,6 +4,8 @@ This is a command-line chess game written entirely in Ruby and using RSpec for
 testing. It is the final project for the Ruby section of The Odin Project
 curriculum. The project page is [here](https://www.theodinproject.com/lessons/ruby-ruby-final-project).
 
+To see the app in action, go to https://replit.com/@apmwebdev/Ruby-CLI-Chess.
+
 ## Assignment
 1. **Build a command line Chess game where two players can play against each
 other.**
